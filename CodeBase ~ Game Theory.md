@@ -55,6 +55,8 @@ CodeBase ~ Game Theory
 	当且仅当在每一个不同的二进制位上，x1,x2…xk中在该位上1的个数是N+1的倍数时，后手方有必胜策略，否则先手必胜。
 
 ### 8 Nim 积 ###
+>验题: hdu 3404
+
 	const int maxn = 22;
 	int f[maxn][maxn];
 	int nim (int x, int y);
