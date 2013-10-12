@@ -78,4 +78,3 @@ CodeBase ~ Game Theory
 						ret ^= _nim (i, j);
 		return ret;
 	}
-
