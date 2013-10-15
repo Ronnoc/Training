@@ -67,8 +67,25 @@
 	for (i = 2, mp = 0; i < MXN; i++) if (isp[i]) prime[++mp] = i;
 	
 **5 因数分解&&质因数分解**
+>验题: 未验
 
-	//TODO LIST
+	//prime_factor()传入n, 返回不同质因数的个数
+	//f存放质因数，nf存放对应质因数的个数
+	#define MAXN 2001000
+	#define PSIZE 100000
+	int plist[PSIZE], pcount = 0; //质数表
+	int prime_factor (int n, int* f, int *nf) {
+		int cnt = 0;
+		int n2 = sqrt ( (double) n);
+		for (int i = 0; n > 1 && plist[i] <= n2; ++i)
+			if (n % plist[i] == 0) {
+				for (nf[cnt] = 0; n % plist[i] == 0; ++nf[cnt], n /= plist[i]);
+				f[cnt++] = plist[i];
+			}
+		if (n > 1) nf[cnt] = 1, f[cnt++] = n;
+		return cnt;
+	}
+
 
 **6 Millar素数测试**
 >验题: poj 1811
@@ -139,7 +156,6 @@
 	}
 
 **9 欧拉函数**
-	
 >验题: poj 1284
 
 	int eulerPhi (int n) {
@@ -242,4 +258,22 @@
 		return 1;
 	}
 
-**13 原根**
+**13 阶乘最后非零位**
+>验题: 未验
+
+	//求阶乘最后非零位,复杂度O(nlogn)
+	//返回该位,n以字符串方式传入
+	int lastdigit(char* buf){
+		const int mod[20]={1,1,2,6,4,2,2,4,2,8,4,4,8,4,6,8,8,6,8,2};
+		int len=strlen(buf),a[MAXN],i,c,ret=1;
+		if (len==1)
+			return mod[buf[0]-'0'];
+		for (i=0;i<len;i++)
+			a[i]=buf[len-1-i]-'0';
+		for (;len;len-=!a[len-1]){
+			ret=ret*mod[a[1]%2*10+a[0]]%5;
+			for (c=0,i=len-1;i>=0;i--)
+				c=c*10+a[i],a[i]=c/5,c%=5;
+		}
+		return ret+ret%2*5;
+	}

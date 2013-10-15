@@ -1,4 +1,4 @@
-#数值#
+#数学#
 **1 有向图，从A点恰好走k步（允许重复经过边）到达B点的方案数mod p的值**
 
 	把给定的图转为邻接矩阵，即A(i,j)=1当且仅当存在一条边i->j。令C=A*A，那么C(i,j)=ΣA(i,k)*A(k,j)，实际上就等于从点i到点j恰好经过2条边的路径数（枚举k为中转点）。类似地，C*A的第i行第j列就表示从i到j经过3条边的路径数。同理，如果要求经过k步的路径数，我们只需要二分求出A^k即可。
@@ -96,3 +96,53 @@
 			ret = -ret;
 		return ret;
 	}
+
+**4 线性相关**
+>验题:未验
+
+	//判线性相关(正交化)
+	//传入m个n维向量
+	#define MAXN 100
+	#define eps 1e-10
+	int linear_dependent (int m, int n, double vec[][MAXN]) {
+		double ort[MAXN][MAXN], e;
+		int i, j, k;
+		if (m > n)
+			return 1;
+		for (i = 0; i < m; i++) {
+			for (j = 0; j < n; j++)
+				ort[i][j] = vec[i][j];
+			for (k = 0; k < i; k++) {
+				for (e = j = 0; j < n; j++)
+					e += ort[i][j] * ort[k][j];
+				for (j = 0; j < n; j++)
+					ort[i][j] -= e * ort[k][j];
+				for (e = j = 0; j < n; j++)
+					e += ort[i][j] * ort[i][j];
+				if (fabs (e = sqrt (e)) < eps)
+					return 1;
+				for (j = 0; j < n; j++)
+					ort[i][j] /= e;
+			}
+		}
+		return 0;
+	}
+
+**5 Polya 原理**
+>验题:未验
+
+	//perm[0..n-1]为0..n-1的一个置换(排列)
+	//返回置换最小周期,num返回循环节个数
+	#define MAXN 1000
+	//gcd need
+	int polya (int* perm, int n, int& num) {
+		int i, j, p, v[MAXN] = {0}, ret = 1;
+		for (num = i = 0; i < n; i++)
+			if (!v[i]) {
+				for (num++, j = 0, p = i; !v[p = perm[p]]; j++)
+					v[p] = 1;
+				ret *= j / gcd (ret, j);
+			}
+		return ret;
+	}
+
