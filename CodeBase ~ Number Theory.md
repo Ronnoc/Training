@@ -43,8 +43,8 @@
 	lint power (lint a, lint x, lint m) {
 		lint ret = 1LL;
 		while (x) {
-			if (x & 1) ret = llpro (a, ret, m);
-			a = llpro (a, a, m);
+			if (x & 1) ret = llpro (a, ret, m);	//(a*ret)%m
+			a = llpro (a, a, m);			   	//(a*a)%m
 			x /= 2;
 		}
 		return ret;
@@ -276,4 +276,53 @@
 				c=c*10+a[i],a[i]=c/5,c%=5;
 		}
 		return ret+ret%2*5;
+	}
+
+**14 原根**
+>验题: hdu2815
+
+	a^x = b mod c;
+	#define MAXN 65536
+	#define LL long long
+	struct LINK {
+		LL data;
+		LL j;
+		LL next;
+	} HASH_LINK[1000000];
+	LL ad, head[MAXN];
+	LL bady_step_giant_step (LL a, LL b, LL c) {
+		LL i, buf, m, temp, g, D, x, y, n = 0;
+		for (i = 0, buf = 1; i < 100; i ++, buf = buf * a % c)
+			if (buf == b) return i;
+		D = 1;
+		while ( (g = __gcd (a, c)) != 1) {
+			if (b % g) return -1;
+			b /= g,c /= g;
+			D = D * a / g % c;
+			++ n;
+		}
+		memset (head, -1, sizeof (head));
+		ad = 0;
+		m = ceil (sqrt ( (long double) c));
+		for (i = 0, buf = 1; i <= m; buf = buf * a % c, i ++) {
+			LL hs = buf % MAXN, tail;
+			int jump = 0;
+			for (tail = head[hs]; ~tail; tail = HASH_LINK[tail]. next)
+				if (buf == HASH_LINK[tail]. data) {
+					jump = 1;
+					break;
+				}
+			if (jump) continue;
+			HASH_LINK[ad]. data = buf;
+			HASH_LINK[ad]. j    = i;
+			HASH_LINK[ad]. next = head[hs];
+			head[hs] = ad ++;
+		}
+		for (i = 0, temp = power (a, m, c), buf = D; i <= m; i ++, buf = temp * buf % c) {//power
+			extGcd (buf, c, x, y);																													//extGcd
+			x = ( (x * b) % c + c) % c;
+			for (LL tail = head[int (x % MAXN)]; ~tail; tail = HASH_LINK[tail].next)
+				if (HASH_LINK[tail]. data == x) return HASH_LINK[tail].j + n + i * m;
+		}
+		return -1;
 	}
