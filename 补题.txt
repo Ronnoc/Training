@@ -1,0 +1,25 @@
+2013 吉林通化邀请赛
+J(概率)
+
+
+ZOJ Monthly, March 2013
+C(两位错排计数)
+
+
+NEERC Southern Subregional 2012
+C (dp)
+A (数位dp)
+B (二分贪心)
+
+
+2013ACM/ICPC亚洲区杭州站现场赛
+1004 计算几何
+1006 并查集
+1010 dp? HAT
+read 1005,1011
+
+
+2010 Asia Fuzhou Regional
+A 乱搞?
+C 计算几何
+D 数位dp
