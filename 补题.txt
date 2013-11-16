@@ -1,25 +1,24 @@
 2013 吉林通化邀请赛
-J(概率)
-
-
-ZOJ Monthly, March 2013
-C(两位错排计数)
+J 概率 				hdu 4599
 
 
 NEERC Southern Subregional 2012
-C (dp)
-A (数位dp)
-B (二分贪心)
+C dp    			sgu 544
+A 数位dp			sgu 542
+B 二分贪心			sgu 543
+D 计算几何			sgu 545
 
 
 2013ACM/ICPC亚洲区杭州站现场赛
-1004 计算几何
-1006 并查集
-1010 dp? HAT
-read 1005,1011
+1004 计算几何 			hdu 4773
+1006 并查集   			hdu 4775
+1010 dp       			hdu 4779
 
 
 2010 Asia Fuzhou Regional
-A 乱搞?
-C 计算几何
-D 数位dp
+C 计算几何 			hdu 3692
+D 数位dp   			hdu 3693
+
+
+2009 Asia Wuhan Regional
+J 计算几何 圆面积并 & 圆面积交 hdu 3239
