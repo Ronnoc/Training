@@ -21,4 +21,10 @@ D 数位dp   			hdu 3693
 
 
 2009 Asia Wuhan Regional
-J 计算几何 圆面积并 & 圆面积交 hdu 3239
+J 计算几何 圆面积并 & 圆面积交 	hdu 3239
+
+
+2009 Asia Harbin Regional
+C 计算几何			UVALive 4765
+I 数学 dp			UVALive 4771
+H 数学 ?			UVALive 4770
