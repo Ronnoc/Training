@@ -16,7 +16,7 @@ D 计算几何			sgu 545
 
 
 2010 Asia Fuzhou Regional
-C 计算几何 			hdu 3692
+C 计算几何 3维 半平面交		hdu 3692
 D 数位dp   			hdu 3693
 
 
@@ -25,6 +25,6 @@ J 计算几何 圆面积并 & 圆面积交 	hdu 3239
 
 
 2009 Asia Harbin Regional
-C 计算几何			UVALive 4765
+C 计算几何 最多穿圆直线		UVALive 4765
 I 数学 dp			UVALive 4771
 H 数学 ?			UVALive 4770
