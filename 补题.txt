@@ -28,3 +28,10 @@ J 计算几何 圆面积并 & 圆面积交 	hdu 3239
 C 计算几何 最多穿圆直线		UVALive 4765
 I 数学 dp			UVALive 4771
 H 数学 ?			UVALive 4770
+
+
+2008 Asia Beijing Online
+C 计算几何空间交集		hdu 4042
+H 计算几何,水平面		hdu 4047
+I 组合计数			hdu 4048
+K 概率dp			hdu 4050
