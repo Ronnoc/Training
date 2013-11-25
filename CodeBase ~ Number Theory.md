@@ -277,3 +277,15 @@
 		}
 		return -1;
 	}
+
+**15 等比数列取模**
+
+	#define LL long long
+	LL dengbi (LL q,LL n,LL m) {	//sigma(i,0,n)q^i mod m
+		if (n==0) return 1;
+		if (n==1) return (q+1) %m;
+		LL nn=n&1?n/2:n/2-1;
+		LL tp=dengbi (q,nn,m);
+		LL ret= (n&1) ? (tp+llpow (q,nn+1,m) *tp%m) %m: (1+q*tp%m+llpow (q,nn+2,m) *tp%m) %m;
+		return ret;
+	}

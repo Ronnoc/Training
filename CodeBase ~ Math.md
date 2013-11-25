@@ -1,4 +1,4 @@
-3#数学#
+#数学#
 **1 TIPS**
 ######有向图，从A点恰好走k步（允许重复经过边）到达B点的方案数mod p的值######
 
@@ -7,14 +7,20 @@
 
 ######二重错排######
 	U_n = ∑(-1)^k * (2n)/(2n-k) * comb(2n-k,k)*(n-k)!
-###### 二项式反演 ######	
+######二项式反演######
 	     n     k                       n     k
 	a_n= ∑ (-1) comb(n,k)b_k <==> b_n= ∑ (-1) comb(n,k)a_k   
 	    k=0                           k=0                    
-	     n                        n     n-k
-	a_n= ∑ comb(n,k)b_k <==> b_n= ∑ (-1)   comb(n,k)a_k   
-	    k=0                      k=0                    
+	     n                             n     n-k
+	a_n= ∑ comb(n,k)b_k 	 <==> b_n= ∑ (-1)   comb(n,k)a_k   
+	    k=0                           k=0                    
 
+######多项式求和######
+	   p^c-1			  phi(p^c)
+	     ∑ i^d mod p^c = ∑ g^(d*i) mod p^c
+		i=0				i=0
+	p是非2质数,或1,2,4,g是p的原根(g^(p-1)==1 mod p,g^i构成p的一个模剩余系)
+	对于2^c (c>3) 有结论 if(d&1)return 0;else return llpow(2,c-1,2^c);
 **2 逆矩阵**
 >验题: 未验
 
