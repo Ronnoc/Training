@@ -16,9 +16,9 @@
 	    k=0                           k=0                    
 
 ######多项式求和######
-	   p^c-1			  phi(p^c)
-	     ∑ i^d mod p^c = ∑ g^(d*i) mod p^c
-		i=0				i=0
+	   p^c-1	         phi(p^c)
+	     ∑ i^d mod p^c =    ∑ g^(d*i) mod p^c
+		i=0				   i=0
 	p是非2质数,或1,2,4,g是p的原根(g^(p-1)==1 mod p,g^i构成p的一个模剩余系)
 	对于2^c (c>3) 有结论 if(d&1)return 0;else return llpow(2,c-1,2^c);
 **2 逆矩阵**
