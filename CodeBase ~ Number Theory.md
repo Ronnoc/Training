@@ -199,7 +199,7 @@
 >验题: hdu 4767<br>
 >special: bell[n + p] = (bell[n] + bell[n + 1]) {mod p}
 
-	//x=t_i {%primeMOD_i}
+	//x=r_i {%primeMOD_i}
 	int primeMOD[MAX_N], M[MAX_N], m[MAX_N], r[MAX_N];
 	int MOD = 1LL;
 	for (int t = 0; t < n; t++) MOD *= primeMOD[t];
