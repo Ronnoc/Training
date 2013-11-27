@@ -42,3 +42,7 @@ C 统计三角形内点的个数		FZU 1973
 
 2013 Asia Changsha Regional
 D fib模数列周期			ZOJ 3729
+
+
+2011 Asia Dalian Regional
+H 多边形旋转,极繁		ZOJ 3546
