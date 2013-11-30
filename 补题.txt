@@ -46,3 +46,8 @@ D fib模数列周期			ZOJ 3729
 
 2011 Asia Dalian Regional
 H 多边形旋转,极繁		ZOJ 3546
+
+
+2013 NEERC Nothern Subregional
+J 模拟,中等加优化		http://codeforces.com/gym/100269
+L 计算几何,根据主视图和左视图确定体积
