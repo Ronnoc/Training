@@ -289,3 +289,48 @@
 		LL ret= (n&1) ? (tp+llpow (q,nn+1,m) *tp%m) %m: (1+q*tp%m+llpow (q,nn+2,m) *tp%m) %m;
 		return ret;
 	}
+
+**16 莫比乌斯**
+
+	map<int,int> moebius (LL n) {
+		map<int,int> res;
+		vector<int>prime;
+		int i,j;
+		for (i=2; i*i<=n; i++)
+			if (n%i==0) {
+				prime.push_back (i);
+				while (n%i==0) n/=i;
+			}
+		if (n!=1) prime.push_back (n);
+		
+		int m=prime.size();
+		for (int i=0; i< (1<<m); i++) {
+			int mu=1,d=1;
+			for (j=0; j<m; j++) {
+				if (i>>j&1) {
+					mu*=-1;
+					d*=prime[j];
+				}
+				res[d]=mu;
+			}
+		}
+		return res;
+	}
+
+	memset(check,0,sizeof check);
+	miu[1]=1;
+	int tot=0;
+	for(int i=2;i<=N;i++){
+		if(!check[i]){
+			prime[tot++]=i;
+			miu[i]=-1;
+		}
+		for(int j=0;j<tot;j++){
+			if(i*prime[j]>N)break;
+			check[i*prime[j]]=1;
+			if(i%prime[j]==0){
+				miu[i*prime[j]]=0;
+				break;
+			}else miu[i*prime[j]]*=-1;
+		}
+	}
