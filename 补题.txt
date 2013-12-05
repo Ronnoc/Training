@@ -51,3 +51,7 @@ H 多边形旋转,极繁		ZOJ 3546
 2013 NEERC Nothern Subregional
 J 模拟,中等加优化		http://codeforces.com/gym/100269
 L 计算几何,根据主视图和左视图确定体积
+
+2013 Asia Nanjing Regional
+D 计算机和,三角投影覆盖线段	HDU 4805
+H 概率论			HDU 4809
