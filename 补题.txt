@@ -55,3 +55,12 @@ L 计算几何,根据主视图和左视图确定体积
 2013 Asia Nanjing Regional
 D 计算机和,三角投影覆盖线段	HDU 4805
 H 概率论			HDU 4809
+
+2012 Asia Tianjin Regional
+I 计算几何 题意forget		HDU 4439
+K not splay+线段树		HDU 4441
+
+2013 NEERC Eastern Subregional
+http://codeforces.com/gym/100285/my
+C 数据结构,机器学习程序
+G dp类似 更改什么的=.=
