@@ -99,3 +99,4 @@
 		12. sum( k(k+1)(k+2)(k+3) ) = n(n+1)(n+2)(n+3)(n+4)/5
 
  18. Young矩阵:Y[1]=1;Y[2]=2;Y[n]=Y[n-1]+(n-1)*Y[n-2];
+ 19. 矩阵乘法通用优越姿势`for(i)for(j)if(a.x[i][j])for(k)ret.x[i][k]+=a.x[i][j]*b.x[j][k]`
