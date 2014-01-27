@@ -1,0 +1,12 @@
+http://acm.hust.edu.cn/vjudge/contest/view.action?cid=39959#overview
+2456 (二分 1784) 	A	K
+1769 (dp优化 716)	R	R
+3281 (流 2215)		L	L
+2311 (博弈 575)		R	R
+3683 (2SAT 1226)	L	Fail
+2559 (栈 2603)		A	R
+3709 (双端队列 640)	A	Fail
+2115 (模运算 2571)	K	K
+2010 (优先队列 815)	A	R
+2653 (计算几何 1902)	K	Fail
+1204 (AC自动机 1602)	K&L	Fail
