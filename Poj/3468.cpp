@@ -1,3 +1,106 @@
+<<<<<<< HEAD
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <bitset>
+#include <cctype>
+#include <cstdio>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <iomanip>
+#include <numeric>
+#include <sstream>
+#include <utility>
+#include <iostream>
+#include <algorithm>
+#include <stdexcept>
+#include <functional>
+
+using namespace std;
+
+#define PB push_back
+#define MP make_pair
+#define AA first
+#define BB second
+#define OP begin()
+#define ED end()
+#define SZ size()
+#define SORT(x) sort(x.OP,x.ED)
+#define SQ(x) ((x)*(x))
+#define SSP system("pause")
+#define cmin(x,y) x=min(x,y)
+#define cmax(x,y) x=max(x,y)
+typedef long long LL;
+typedef pair<int, int> PII;
+struct SEG {
+	int l,r;
+	LL lazy,w;
+	SEG() {}
+	SEG( int _l,int _r ) {l=_l,r=_r,lazy=0,w=0;}
+} SGT[1<<18];
+void build( int l,int r,int id ) {
+	SGT[id]=SEG( l,r );
+	int mid=( l+r )/2;
+	if ( l!=r )build( l,mid,id*2 );
+	if ( l!=r )build( mid+1,r,id*2+1 );
+}
+void pushdown( int id,int l,int r,LL w ) {
+//	if ( SGT[id].l==SGT[id].r ) {SGT[id].w+=w; return;}
+//	cout<<id<<" "<<SGT[id].l<<" "<<SGT[id].r<<" "<<l<<" "<<r<<" "<<w<<endl;
+	if ( SGT[id].l==l&&SGT[id].r==r ) {SGT[id].lazy+=w; return;}
+	SGT[id].w+=w*( r-l+1 );
+	int mid=( SGT[id].l+SGT[id].r )/2;
+	if ( l>mid ) pushdown( id*2+1,l,r,w );
+	else if ( r<=mid ) 	pushdown( id*2,l,r,w );
+	else {
+		pushdown( id*2,l,mid,w );
+		pushdown( id*2+1,mid+1,r,w );
+	}
+}
+LL query( int p,int q,int id ) {
+	LL lazy=SGT[id].lazy*( q-p+1 );
+	if ( SGT[id].l==p&&SGT[id].r==q )return lazy+SGT[id].w;
+	int mid=( SGT[id].l+SGT[id].r )/2;
+	if ( q<=mid )return lazy+query( p,q,id*2 );
+	else if ( p>mid )return lazy+query( p,q,id*2+1 );
+	else {
+		LL al=query( p,mid,id*2 );
+		LL ar=query( mid+1,q,id*2+1 );
+		return lazy+al+ar;
+	}
+}
+int n,q;
+LL a[100010];
+int main() {
+	int i,j,l,r;
+	LL x;
+	while ( ~scanf( "%d%d",&n,&q ) ) {
+		build( 1,n,1 );
+		for ( i=1; i<=n; i++ )scanf( "%lld",&a[i] );
+		for ( i=1; i<=n; i++ )pushdown( 1,i,i,a[i] );
+		for ( j=1; j<=q; j++ ) {
+			char s[2];
+			scanf( "%s",s );
+			if ( s[0]=='Q' ) {
+				scanf( "%d%d",&l,&r );
+				printf( "%lld\n",query( l,r,1 ) );
+			} else {
+				scanf( "%d%d%lld",&l,&r,&x );
+				pushdown( 1,l,r,x );
+			}
+		}
+	}
+	return 0;
+}
+=======
 #include<stdio.h>
 #define LL long long
 struct line{
@@ -57,3 +160,4 @@ int main(){
 		} 
 	return 0;
 	}
+>>>>>>> 020dfaf6b07b9f7c884acd4bc4c88875a20c169d

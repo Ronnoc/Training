@@ -3,9 +3,9 @@
 >ax+by==gcd(a,b)的解
 >验题: poj 1061
 
-	typedef long long lint;		//easy to change
-	lint extGcd (lint a, lint b, lint &x, lint &y) {
-		lint ret = a;
+	typedef long long LL;
+	LL extGcd (LL a, LL b, LL &x, LL &y) {
+		LL ret = a;
 		if (b) {
 			ret = extGcd (b, a % b, y, x);
 			y -= (a / b) * x;
@@ -18,8 +18,8 @@
 >验题:未验
 
 	//用于m不是质数 gcd(a,m)==1时有逆元
-	lint modInv (lint a, lint m) {
-		lint x, y;
+	LL modInv (LL a, LL m) {
+		LL x, y;
 		extGcd(a,m,x,y);
 		return (m+x%m)%m;
 	}
@@ -29,8 +29,8 @@
 >验题: poj 1811
 
 	//a*b mod m
-	lint llpro (lint a, lint b, lint m) {
-		lint ret = 0LL;
+	LL llpro (LL a, LL b, LL m) {
+		LL ret = 0LL;
 		if (b > a) swap (a, b);
 		while (b) {
 			if (b & 1) ret = (a + ret) % m;
@@ -40,11 +40,11 @@
 		return ret;
 	}
 	//a^x mod m
-	lint power (lint a, lint x, lint m) {
-		lint ret = 1LL;
+	LL power (LL a, LL x, LL m) {
+		LL ret = 1LL;
 		while (x) {
-			if (x & 1) ret = llpro (a, ret, m);	//(a*ret)%m
-			a = llpro (a, a, m);			   	//(a*a)%m
+			if (x & 1) ret = llpro (a, ret, m);	//(a*ret)%m;
+			a = llpro (a, a, m);			   	//(a*a)%m;
 			x /= 2;
 		}
 		return ret;
@@ -55,15 +55,13 @@
 
 	bool isp[MXN];
 	memset (isp, 0, sizeof isp);
-	lint i, j, sn = sqrt ( (double) MXN);
-	for (i = 3, isp[2] = 1; i < MXN; i++)
-		isp[i] = i & 1;
-	for (i = 3; i <= sn + 1; i++)
-		if (isp[i])
-			for (j = i * i; j <= MXN; j += 2 * i)
+	LL i, j, sn = sqrt ( (double) MXN);
+	for (i = 3, isp[2] = 1; i < MXN; i+=2)isp[i]=1;
+	for (i = 3; i <= sn + 1; i+=2)
+		if (isp[i])for (j = i * i; j <= MXN; j += 2 * i)
 				isp[j] = 0;
 	
-	lint prime[PRIME_NUM],mp;	//PRIME_NUM ~= MXN/ln[MXN]
+	LL prime[PRIME_NUM],mp;	//PRIME_NUM ~= MXN/ln[MXN]
 	for (i = 2, mp = 0; i < MXN; i++) if (isp[i]) prime[++mp] = i;
 	
 **5 因数分解&&质因数分解**
@@ -90,65 +88,31 @@
 **6 Millar素数测试 && rho大整数因数分解**
 >验题: poj 2429
 
-	//****************************************************************
-	// Miller_Rabin 算法进行素数测试
-	//速度快，而且可以判断 <2^63的数
-	//****************************************************************
+	//	Miller_Rabin 算法进行素数测试，速度快，而且可以判断 <2^63的数
 	const int S=20;//随机算法判定次数，S越大，判错概率越小
-	//计算 (a*b)%c.   a,b都是long long的数，直接相乘可能溢出的
-	//  a,b,c <2^63
-	long long mult_mod (long long a,long long b,long long c) {
-		a%=c;
-		b%=c;
-		long long ret=0;
-		while (b) {
-			if (b&1) {ret+=a; ret%=c;}
-			a<<=1;
-			if (a>=c) a%=c;
-			b>>=1;
-		}
-		return ret;
-	}
-	//计算  x^n %c
-	long long pow_mod (long long x,long long n,long long mod) { //x^n%c
-		if (n==1) return x%mod;
-		x%=mod;
-		long long tmp=x;
-		long long ret=1;
-		while (n) {
-			if (n&1) ret=mult_mod (ret,tmp,mod);
-			tmp=mult_mod (tmp,tmp,mod);
-			n>>=1;
-		}
-		return ret;
-	}
 	//以a为基,n-1=x*2^t      a^(n-1)=1(mod n)  验证n是不是合数
 	//一定是合数返回true,不一定返回false
-	bool check (long long a,long long n,long long x,long long t) {
-		long long ret=pow_mod (a,x,n);
-		long long last=ret;
+	bool check (LL a,LL n,LL x,LL t) {
+		LL ret=power (a,x,n);								//power,llpro
+		LL last=ret;
 		for (int i=1; i<=t; i++) {
-			ret=mult_mod (ret,ret,n);
+			ret=llpro (ret,ret,n);
 			if (ret==1&&last!=1&&last!=n-1) return true; //合数
 			last=ret;
 		}
 		if (ret!=1) return true;
 		return false;
 	}
-	// Miller_Rabin()算法素数判定
-	//是素数返回true.(可能是伪素数，但概率极小)
-	//合数返回false;
-	bool Miller_Rabin (long long n) {
+	//Miller_Rabin()算法素数判定,是素数返回true.(可能是伪素数，但概率极小),合数返回false;
+	bool Miller_Rabin (LL n) {
 		if (n<2) return false;
 		if (n==2) return true;
 		if ( (n&1) ==0) return false; //偶数
-		long long x=n-1;
-		long long t=0;
+		LL x=n-1, t=0;
 		while ( (x&1) ==0) {x>>=1; t++;}
 		for (int i=0; i<S; i++) {
-			long long a=rand() % (n-1) +1; //rand()需要stdlib.h头文件
-			if (check (a,n,x,t))
-				return false;//合数
+			LL a=rand() % (n-1) +1;		//rand()需要stdlib.h头文件	(rand64())
+			if (check (a,n,x,t))return false;	//合数
 		}
 		return true;
 	}
@@ -186,7 +150,7 @@
 **8 阶乘||组合数 取模**
 >验题:未验
 
-	int fact[MAX_P];	//预处理n! mod p 的表 O(p)
+	int fact[MAX_P];	//预处理n! mod p 的表 O(n)
 	// n!=a*p^e return a%p
 	int modFact (int n, int p, int &e) {
 		e = 0;
@@ -253,7 +217,7 @@
 >special: bell[n + p] = (bell[n] + bell[n + 1]) {mod p}
 
 	//x=r_i {%primeMOD_i}
-	int primeMOD[MAX_N], M[MAX_N], m[MAX_N], r[MAX_N];
+	int primeMOD[MAX_N], M[MAX_N], m[MAX_N], r[MAX_N];//primeMOD要求两两互质
 	int MOD = 1LL;
 	for (int t = 0; t < n; t++) MOD *= primeMOD[t];
 	for (int t = 0; t < n; t++) m[t] = MOD / primeMOD[t];
@@ -285,7 +249,7 @@
 **14 离散对数**
 >验题: hdu2815
 
-	a^x = b mod c;
+	//a^x = b mod c;
 	#define MAXN 65536
 	#define LL long long
 	struct LINK {
@@ -323,7 +287,7 @@
 			head[hs] = ad ++;
 		}
 		for (i = 0, temp = power (a, m, c), buf = D; i <= m; i ++, buf = temp * buf % c) {//power
-			extGcd (buf, c, x, y);																													//extGcd
+			extGcd (buf, c, x, y);											              //extGcd
 			x = ( (x * b) % c + c) % c;
 			for (LL tail = head[int (x % MAXN)]; ~tail; tail = HASH_LINK[tail].next)
 				if (HASH_LINK[tail]. data == x) return HASH_LINK[tail].j + n + i * m;
