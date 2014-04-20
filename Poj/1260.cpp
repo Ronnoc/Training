@@ -39,19 +39,28 @@ const double INF=1e20;
 const double PI=acos( -1. );
 const int MXN = 50;
 const LL MOD = 1000000007;
-int cnt[22],w[22];
-int dp[22][100005];
-int main() {
+int n;
+int a[111];
+int p[111];
+int dp[111];
+int main(){
 	int i,j,k;
-	int m,n;
-	while ( ~scanf( "%d%d",&m,&n ) ) {
-		for(i=0;i<=n;i++)for(j=0;j<=m;j++)dp[i][j]=0;
-		dp[0][0]=1;
-		for ( i=1; i<=n; i++ )scanf( "%d%d",&cnt[i],&w[i] );
-		for ( i=0; i<n; i++ )for ( j=0; j<=m; j++ )if ( dp[i][j] )
-					for ( k=0; k<=cnt[i+1]&&j+w[i+1]*k<=m; k++ )dp[i+1][j+w[i+1]*k]=1,dp[i+1][j]=1;
-		while ( !dp[n][m] )m--;
-		printf( "%d\n",m );
+	int T;
+	scanf("%d",&T);
+	while(T--){
+		scanf("%d",&n);
+		for(i=1;i<=n;i++)scanf("%d%d",&a[i],&p[i]);
+		int dp[111];
+		dp[0]=0;
+		for(i=1;i<=n;i++){
+			dp[i]=dp[i-1]+p[i]*(a[i]+10);
+			for(j=i-2;j>=0;j--){
+				int tot=0;
+				for(k=j+1;k<=i;k++)tot+=a[k];
+				cmin(dp[i],dp[j]+p[i]*(tot+10));
+			}
+		}
+		printf("%d\n",dp[n]);
 	}
 	return 0;
 }

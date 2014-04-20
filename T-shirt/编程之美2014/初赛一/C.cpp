@@ -39,19 +39,32 @@ const double INF=1e20;
 const double PI=acos( -1. );
 const int MXN = 50;
 const LL MOD = 1000000007;
-int cnt[22],w[22];
-int dp[22][100005];
+double x[111111],y[111111];
+int n;
+double play( double a ) {
+	double ret=0;
+	for ( int i=1; i<=n; i++ )ret+=sqrt( SQ( x[i]-a )+SQ( y[i] ) );
+	return ret;
+}
 int main() {
-	int i,j,k;
-	int m,n;
-	while ( ~scanf( "%d%d",&m,&n ) ) {
-		for(i=0;i<=n;i++)for(j=0;j<=m;j++)dp[i][j]=0;
-		dp[0][0]=1;
-		for ( i=1; i<=n; i++ )scanf( "%d%d",&cnt[i],&w[i] );
-		for ( i=0; i<n; i++ )for ( j=0; j<=m; j++ )if ( dp[i][j] )
-					for ( k=0; k<=cnt[i+1]&&j+w[i+1]*k<=m; k++ )dp[i+1][j+w[i+1]*k]=1,dp[i+1][j]=1;
-		while ( !dp[n][m] )m--;
-		printf( "%d\n",m );
+	int i,j;
+	int T;
+	scanf( "%d",&T );
+	for ( int CASE=1; CASE<=T; ++CASE ) {
+		scanf( "%d",&n );
+		for ( i=1; i<=n; i++ )scanf( "%lf%lf",&x[i],&y[i] );
+		double l=0,r=0;
+		for ( i=1; i<=n; i++ )cmin( l,x[i] );
+		for ( i=1; i<=n; i++ )cmax( r,x[i] );
+		for ( int t=0; t<=50; t++ ) {
+			double lmid=( r-l )/3+l;
+			double rmid=r-( r-l )/3;
+			double fl=play( lmid );
+			double fr=play( rmid );
+			if ( fl>fr )l=lmid;
+			else r=rmid;
+		}
+		printf( "Case %d: %.8lf\n",CASE,( l+r )/2 );
 	}
 	return 0;
 }

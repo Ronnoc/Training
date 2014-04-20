@@ -39,19 +39,48 @@ const double INF=1e20;
 const double PI=acos( -1. );
 const int MXN = 50;
 const LL MOD = 1000000007;
-int cnt[22],w[22];
-int dp[22][100005];
+double play( char *a ) {
+	int len=strlen(a);
+	char q=a[len-1];
+	char p=a[len-2];
+	char s[111];
+	for ( int i=0; i<=len; i++ )s[i]=a[i];
+	double ret;
+	if ( p=='d' ) {
+		sscanf( s,"%lfdm",&ret );
+		return ret*100;
+	}
+	if ( p=='c' ) {
+		sscanf( s,"%lfcm",&ret );
+		return ret*10;
+	}
+	if ( p=='m' ) {
+		sscanf( s,"%lfmm",&ret );
+		return ret;
+	}
+	if ( p=='u' ) {
+		sscanf( s,"%lfum",&ret );
+		return ret/1000;
+	}
+	if ( p=='n' ) {
+		sscanf( s,"%lfnm",&ret );
+		return ret/1000000;
+	}
+	sscanf( s,"%lfm",&ret );
+	return ret*1000;
+}
 int main() {
-	int i,j,k;
-	int m,n;
-	while ( ~scanf( "%d%d",&m,&n ) ) {
-		for(i=0;i<=n;i++)for(j=0;j<=m;j++)dp[i][j]=0;
-		dp[0][0]=1;
-		for ( i=1; i<=n; i++ )scanf( "%d%d",&cnt[i],&w[i] );
-		for ( i=0; i<n; i++ )for ( j=0; j<=m; j++ )if ( dp[i][j] )
-					for ( k=0; k<=cnt[i+1]&&j+w[i+1]*k<=m; k++ )dp[i+1][j+w[i+1]*k]=1,dp[i+1][j]=1;
-		while ( !dp[n][m] )m--;
-		printf( "%d\n",m );
+	int i,j;
+	int T;
+	scanf("%d",&T);
+	for ( int CASE=1; CASE<=T; ++CASE ) {
+		char A[111],B[111];
+		double c;
+		scanf("%s%s%lfpx",A,B,&c);
+		double a=play( A );
+		double b=play( B );
+		printf( "Case %d: ",CASE );
+		printf( "%.2lfpx\n",a*c/b );
 	}
 	return 0;
 }
