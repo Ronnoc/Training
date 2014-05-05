@@ -25,32 +25,7 @@
 	}
 	//if m为质数 [费马小定理]a^(m-1)=1 mod m ==>a^(m-2)是a关于m的逆元
 
-**3 快速幂取模&&快速乘取模**
->验题: poj 1811
-
-	//a*b mod m
-	LL llpro (LL a, LL b, LL m) {
-		LL ret = 0LL;
-		if (b > a) swap (a, b);
-		while (b) {
-			if (b & 1) ret = (a + ret) % m;
-			a = (a + a) % m;
-			b /= 2;
-		}
-		return ret;
-	}
-	//a^x mod m
-	LL power (LL a, LL x, LL m) {
-		LL ret = 1LL;
-		while (x) {
-			if (x & 1) ret = llpro (a, ret, m);	//(a*ret)%m;
-			a = llpro (a, a, m);			   	//(a*a)%m;
-			x /= 2;
-		}
-		return ret;
-	}
-
-**4 素数筛**
+**3 素数筛**
 >验题: poj 1811
 
 	bool isp[MXN];
@@ -91,7 +66,6 @@
 	//	Miller_Rabin 算法进行素数测试，速度快，而且可以判断 <2^63的数
 	const int S=20;//随机算法判定次数，S越大，判错概率越小
 	//以a为基,n-1=x*2^t      a^(n-1)=1(mod n)  验证n是不是合数
-	//一定是合数返回true,不一定返回false
 	bool check (LL a,LL n,LL x,LL t) {
 		LL ret=power (a,x,n);								//power,llpro
 		LL last=ret;
@@ -103,7 +77,6 @@
 		if (ret!=1) return true;
 		return false;
 	}
-	//Miller_Rabin()算法素数判定,是素数返回true.(可能是伪素数，但概率极小),合数返回false;
 	bool Miller_Rabin (LL n) {
 		if (n<2) return false;
 		if (n==2) return true;
@@ -116,12 +89,8 @@
 		}
 		return true;
 	}
-	//************************************************
-	//pollard_rho 算法进行质因数分解
-	//************************************************
 	long long factor[300];//质因数分解结果（刚返回时是无序的）
 	int tol;//质因数的个数。数组小标从0开始
-
 	long long Pollard_rho (long long x,long long c) {
 		long long i=1,k=2;
 		long long x0=rand() %x;
@@ -196,7 +165,7 @@
 	}
 
 **10 模同余方程组**
->验题:未验
+>验题:4767?未验
 
 	//a_i*x=b_i {%m_i}  m_i可以不互质
 	//pair<b,m>			x=b {%m}
@@ -211,20 +180,6 @@
 		}
 		return MP (x % m, m);
 	}
-
-**11 中国剩余定理 CRT**
->验题: hdu 4767<br>
->special: bell[n + p] = (bell[n] + bell[n + 1]) {mod p}
-
-	//x=r_i {%primeMOD_i}
-	int primeMOD[MAX_N], M[MAX_N], m[MAX_N], r[MAX_N];//primeMOD要求两两互质
-	int MOD = 1LL;
-	for (int t = 0; t < n; t++) MOD *= primeMOD[t];
-	for (int t = 0; t < n; t++) m[t] = MOD / primeMOD[t];
-	for (int t = 0; t < n; t++) M[t] = modInv (m[t], primeMOD[t]);
-	int ans = 0;
-	for (int t = 0; t < n; t++)
-		ans = ( (ans + m[t] * M[t] % MOD * r[t] % MOD) % MOD + MOD) % MOD;
 
 **13 阶乘最后非零位**
 >验题: 未验

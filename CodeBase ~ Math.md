@@ -1,7 +1,7 @@
 #数学#
 **1 分割数**
 >n划分为K个自然数的方案数<br>
->验题: 未验 (东大)
+>验题: ? (东大)
 
 	int dp[MAX_N];
 	int partition (int n) {
@@ -18,7 +18,7 @@
 
 
 **2 Polya 原理**
->验题:未验
+>验题:?
 
 	//perm[0..n-1]为0..n-1的一个置换(排列)
 	//返回置换最小周期,num返回循环节个数
@@ -35,7 +35,7 @@
 		return ret;
 	}
 **3 高斯消元**
->验题:未验
+>验题:?
 
 	//全主元gauss消去解a[][]x[]=b[]
 	//返回是否有唯一解,若有解在b[]中
@@ -84,6 +84,8 @@
 	}
 
 **4 FFT**
+
+>验题:?
 
 	int revv (int x,int mask) {
 		int ret=0;
@@ -145,3 +147,37 @@
 			ans[i]=ansx[i]+0.5;
 		return lans;
 	}
+
+**5 单纯形**
+
+>验题:诡异
+
+	#define rep(i,l,n) for(int i = l; i <= n; i++)
+	const int MAXR = 300, MAXC = 500, inf = ( ~0U )>>2;
+	int n, m, a[MAXR][MAXC], next[MAXC], s, t, c;
+	inline void orz( int l, int e ) {
+		a[l][e] = -1;
+		t = MAXC - 1;
+		rep( i,0,m ) if ( a[l][i] ) next[t] = i, t = i;
+		next[t] = -1;
+		rep( i,0,n ) if ( i != l && ( t = a[i][e] ) ) {
+			a[i][e] = 0;
+			for ( int j = next[MAXC - 1]; j != -1; j = next[j] ) a[i][j] += a[l][j] * t;
+		}
+	}
+	int solve( void ) {
+		for ( ;; ) {
+			int min = inf, l = 0, e = 0;
+			rep( i,1,m ) if ( a[0][i] > 0 ) {e = i; break;}
+			if ( !e ) return a[0][0];
+			rep( i,1,n ) if ( a[i][e] < 0 && a[i][0] < min ) min = a[i][0], l = i;
+			orz( l,e );
+		}
+	}
+	/*scanf( "%d%d", &m, &n );						//m个方程,n个变量
+		rep( j,1,m ) scanf( "%d", &a[0][j] );		//第j个方程左端 隐含标准化变元
+		rep( i,1,n ) {
+			scanf( "%d%d%d", &s, &t, &c );
+			rep( j,s,t ) a[i][j] = -1; 				//a[0][j]+sigma{a[i][j]*x[i]}<=0;
+			a[i][0] = c;							//最小化z中的x[i]系数
+		}*/
