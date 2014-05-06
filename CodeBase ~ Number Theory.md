@@ -289,20 +289,32 @@
 		return res;
 	}
 
-	memset(check,0,sizeof check);
-	miu[1]=1;
-	int tot=0;
-	for(int i=2;i<=N;i++){
-		if(!check[i]){
-			prime[tot++]=i;
-			miu[i]=-1;
-		}
-		for(int j=0;j<tot;j++){
-			if(i*prime[j]>N)break;
-			check[i*prime[j]]=1;
-			if(i%prime[j]==0){
-				miu[i*prime[j]]=0;
-				break;
-			}else miu[i*prime[j]]*=-1;
-		}
+	memset(mul,0,sizeof mul);
+	for(i=1;i<=N;i++){
+		if(i==1)mul[i]=1;
+		else mul[i]*=-1;
+		for(j=i*2;j<=N;j+=i)
+			mul[j]+=mul[i];
+	}
+	
+	int mu[N], p[N], pn;
+	bool flag[N];
+	void init() {
+			pn = 0;
+			mu[1] = 1;
+			for(int i = 2; i < N; i++) {
+					if(!flag[i]) {
+							p[pn ++ ] = i;
+							mu[i] = -1;
+					}
+					for(int j = 0; j < pn && i * p[j] < N; j++) {
+							flag[i * p [j]] = true;
+							if(i % p[j] == 0) {
+									mu[i * p[j]] = 0;
+									break;
+							} else {
+									mu[i * p[j]] = -mu[i];
+							}
+					}
+			}
 	}
