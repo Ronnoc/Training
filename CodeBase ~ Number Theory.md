@@ -1,9 +1,7 @@
-#数论#
 **1 扩展欧几里得**
 >ax+by==gcd(a,b)的解
 >验题: poj 1061
 
-	typedef long long LL;
 	LL extGcd (LL a, LL b, LL &x, LL &y) {
 		LL ret = a;
 		if (b) {
@@ -24,22 +22,8 @@
 		return (m+x%m)%m;
 	}
 	//if m为质数 [费马小定理]a^(m-1)=1 mod m ==>a^(m-2)是a关于m的逆元
-
-**3 素数筛**
->验题: poj 1811
-
-	bool isp[MXN];
-	memset (isp, 0, sizeof isp);
-	LL i, j, sn = sqrt ( (double) MXN);
-	for (i = 3, isp[2] = 1; i < MXN; i+=2)isp[i]=1;
-	for (i = 3; i <= sn + 1; i+=2)
-		if (isp[i])for (j = i * i; j <= MXN; j += 2 * i)
-				isp[j] = 0;
 	
-	LL prime[PRIME_NUM],mp;	//PRIME_NUM ~= MXN/ln[MXN]
-	for (i = 2, mp = 0; i < MXN; i++) if (isp[i]) prime[++mp] = i;
-	
-**5 因数分解&&质因数分解**
+**3 因数分解&&质因数分解**
 >验题: 未验
 
 	//prime_factor()传入n, 返回不同质因数的个数
@@ -60,7 +44,7 @@
 	}
 
 
-**6 Millar素数测试 && rho大整数因数分解**
+**4 Millar素数测试 && rho大整数因数分解**
 >验题: poj 2429
 
 	//	Miller_Rabin 算法进行素数测试，速度快，而且可以判断 <2^63的数
@@ -116,7 +100,7 @@
 		findfac (n/p);
 	}
 
-**8 阶乘||组合数 取模**
+**5 阶乘||组合数 取模**
 >验题:未验
 
 	int fact[MAX_P];	//预处理n! mod p 的表 O(n)
@@ -141,7 +125,7 @@
 		return a1 * modInv (a2 * a3 % p, p) % p;
 	}
 
-**9 欧拉函数**
+**6 欧拉函数**
 >验题: poj 1284
 
 	int eulerPhi (int n) {
@@ -164,7 +148,7 @@
 				for (int j = i; j < n; j += i) euler[j] = euler[j] / i * (i - 1);
 	}
 
-**10 模同余方程组**
+**7 模同余方程组**
 >验题:4767?未验
 
 	//a_i*x=b_i {%m_i}  m_i可以不互质
@@ -181,7 +165,7 @@
 		return MP (x % m, m);
 	}
 
-**13 阶乘最后非零位**
+**8 阶乘最后非零位**
 >验题: 未验
 
 	//求阶乘最后非零位,复杂度O(nlogn)
@@ -201,7 +185,7 @@
 		return ret+ret%2*5;
 	}
 
-**14 离散对数**
+**9 离散对数**
 >验题: hdu2815
 
 	//a^x = b mod c;
@@ -250,19 +234,8 @@
 		return -1;
 	}
 
-**15 等比数列取模**
 
-	#define LL long long
-	LL dengbi (LL q,LL n,LL m) {	//sigma(i,0,n)q^i mod m
-		if (n==0) return 1;
-		if (n==1) return (q+1) %m;
-		LL nn=n&1?n/2:n/2-1;
-		LL tp=dengbi (q,nn,m);
-		LL ret= (n&1) ? (tp+llpow (q,nn+1,m) *tp%m) %m: (1+q*tp%m+llpow (q,nn+2,m) *tp%m) %m;
-		return ret;
-	}
-
-**16 莫比乌斯**
+**10 莫比乌斯**
 
 	map<int,int> moebius (LL n) {
 		map<int,int> res;

@@ -71,7 +71,7 @@
 			while (sub < 1 << n) {
 				//
 				int x = sub & -sub, y = sub + x;
-				sub = (sub & -y) / x >> 1 | y;
+				sub = (sub & ~y) / x >> 1 | y;
 			}
  17. 求和公式
 	

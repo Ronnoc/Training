@@ -82,6 +82,19 @@ struct circle {
 		return Sign( ( a-ct ).len()-r )<=0;
 	}
 };
+circle minCircle( vector<point>&L ) {
+	circle ans( point( 0,0 ),0 );
+	int i,j,k;
+	for ( i=2; i<L.SZ; i++ )if ( !( ans>L[i] ) ) {
+			ans=circle( L[0],L[i] );
+			for ( j=1; j<i; j++ )if ( !( ans>L[j] ) ) {
+					ans=circle( L[i],L[j] );
+					for ( k=0; k<j; k++ )if ( !( ans>L[k] ) )
+							ans=circle( L[i],L[j],L[k] );
+				}
+		}
+	return ans;
+}
 int main() {
 	int i,j,k,n;
 	while ( ~scanf( "%d",&n )&&n ) {
@@ -91,15 +104,7 @@ int main() {
 			scanf( "%lf%lf",&x,&y );
 			L.PB( point( x,y ) );
 		}
-		circle ans( point( 0,0 ),0 );
-		for ( i=2; i<L.SZ; i++ )if ( !( ans>L[i] ) ) {
-				ans=circle( L[0],L[i] );
-				for ( j=1; j<i; j++ )if ( !( ans>L[j] ) ) {
-						ans=circle( L[i],L[j] );
-						for ( k=0; k<j; k++ )if ( !( ans>L[k] ) )
-								ans=circle( L[i],L[j],L[k] );
-					}
-			}
+		circle ans=minCircle( L );
 		printf( "%.2f %.2f %.2f\n",ans.ct.x,ans.ct.y,ans.r );
 	}
 	return 0;

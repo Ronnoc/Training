@@ -53,43 +53,43 @@ struct point {
 	double operator *( const point &p )const {return x*p.x+y*p.y;} //点积
 	double operator ^( const point &p )const {return x*p.y-y*p.x;} //叉积
 	void output() {printf( "%.6f %.6f\n",x,y );}
-}ORI(0,0);
+} ORI( 0,0 );
 double r;
 int n;
 point info[MXN+10];
-// 用有向面积，划分成一个三角形和圆的交
-double area2(point pa,point pb){
-	if(pa.len()<pb.len())swap(pa,pb);
-	if(pb.len()<eps)return 0;
+//用有向面积，划分成一个三角形和圆的交
+double area2( point pa,point pb ) {
+	if ( pa.len()<pb.len() )swap( pa,pb );
+	if ( pb.len()<eps )return 0;
 	double a,b,c,B,C,sinB,cosB,sinC,cosC,S,h,theta;
-	a=pb.len(),b=pa.len(),c=(pb-pa).len();
-	cosB=pb*(pb-pa)/a/c;
-	B=acos(cosB);
+	a=pb.len(),b=pa.len(),c=( pb-pa ).len();
+	cosB=pb*( pb-pa )/a/c;
+	B=acos( cosB );
 	cosC=pa*pb/a/b;
-	C=acos(cosC);
-	if(a>r){
-		S=(C/2)*r*r;
-		h=a*b*sin(C)/c;
-		if(h<r&&B<PI/2)S-=(acos(h/r)*r*r-h*sqrt(r*r-h*h));
-	}else if(b>r){
-		theta=PI-B-asin(sin(B)/r*a);
-		S=.5*a*r*sin(theta)+(C-theta)/2*r*r;
-	}else S=.5*sin(C)*a*b;
+	C=acos( cosC );
+	if ( a>r ) {
+		S=( C/2 )*r*r;
+		h=a*b*sin( C )/c;
+		if ( h<r&&B<PI/2 )S-=( acos( h/r )*r*r-h*sqrt( r*r-h*h ) );
+	} else if ( b>r ) {
+		theta=PI-B-asin( sin( B )/r*a );
+		S=.5*a*r*sin( theta )+( C-theta )/2*r*r;
+	} else S=.5*sin( C )*a*b;
 	return S;
 }
-double area(){
+double area() {
 	double S=0;
-	for(int i=0;i<n;i++)
-		S+=area2(info[i],info[i+1])*Sign(info[i]^info[i+1]);
-	return fabs(S);
+	for ( int i=0; i<n; i++ )
+		S+=area2( info[i],info[i+1] )*Sign( info[i]^info[i+1] );
+	return fabs( S );
 }
-int main(){
+int main() {
 	int i,j;
-	while(~scanf("%lf",&r)){
-		scanf("%d",&n);
-		for(i=0;i<n;i++)scanf("%lf%lf",&info[i].x,&info[i].y);
+	while ( ~scanf( "%lf",&r ) ) {
+		scanf( "%d",&n );
+		for ( i=0; i<n; i++ )scanf( "%lf%lf",&info[i].x,&info[i].y );
 		info[n]=info[0];
-		printf("%.2f\n",area());
+		printf( "%.2f\n",area() );
 	}
 	return 0;
 }
