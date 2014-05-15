@@ -5,7 +5,7 @@
 		double x, y;
 		point() {}
 		point( double _x, double _y ) : x( _x ), y( _y ) {}
-		point operator - ( point p ) {return point( x - p.x, y - p.y );}//{+,-,*,/}
+		point operator - ( const point &p ) const {return point( x - p.x, y - p.y );}//{+,-,*,/}
 		bool operator < ( const point &p ) const {
 			return sign( x - p.x ) == 0 ? sign( y - p.y ) <= 0 : sign( x - p.x ) <= 0;
 		}
@@ -24,6 +24,7 @@
 	};
 
 **2 凸包及其直径**
+>验题:poj2187
 
 	vector<point> ConvexHull( vector<point> p ) {
 		int n = p.size(), m = 0;
@@ -61,6 +62,7 @@
 	}
 
 **3 半平面交**
+>验题:poj2451
 
 	struct line {
 		point u,v;//u->v的左边
@@ -107,6 +109,7 @@
 	}
 
 **4 三维凸包**
+>验题:poj3528
 
 	struct spoint {
 		double x,y,z;
@@ -163,6 +166,7 @@
 	}
 
 **4 多边形与圆面积交**
+>验题:poj3675
 
 	double area2( point pa,point pb ) {
 		if ( pa.len()<pb.len() )swap( pa,pb );
@@ -191,6 +195,7 @@
 	}
 
 **5 最小圆覆盖**
+>验题:hdu3007
 
 	struct circle {
 		point ct;
