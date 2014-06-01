@@ -92,3 +92,4 @@
  20. Polya:G是集合X上的置换群,X的每个元素可以染成k种颜色,不等价的着色数P,nc(g)为置换g的循环个数
  
 		|G|*P=∑{g∈G}k^nc(g)
+ 21. CRT:`x%m_i=a_i,M=∏m_i,M_i=M/m_i,t_i*M_i%m_i=1 => x=∑a_i*t_i*M_i`

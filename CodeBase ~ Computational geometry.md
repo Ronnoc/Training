@@ -5,7 +5,7 @@
 		double x, y;
 		point() {}
 		point( double _x, double _y ) : x( _x ), y( _y ) {}
-		point operator - ( const point &p ) const {return point( x - p.x, y - p.y );}//{+,-,*,/}
+		point operator - ( const point &p ) const {return point( x - p.x, y - p.y );}//{-,*,/}
 		bool operator < ( const point &p ) const {
 			return sign( x - p.x ) == 0 ? sign( y - p.y ) <= 0 : sign( x - p.x ) <= 0;
 		}
@@ -17,7 +17,7 @@
 		point rotate() {return point( -y, x );}
 		point rotate( double arc )
 		{return point( x*cos( arc ) - y*sin( arc ),x*sin( arc ) + y*cos( arc ) );}
-		int dis( point p ) {return ( *this - p ).len();}
+		double dis( point p ) {return ( *this - p ).len();}
 		double dis2( point p ) {p = p - ( *this ); return p*p;}//平方
 		void in() {scanf( "%lf%lf", &x, &y );}
 		void out() {printf( "%f %f\n",x,y );}
@@ -32,15 +32,13 @@
 		q.resize( n * 2 );
 		sort( p.begin(), p.end() );
 		for ( int i = 0; i < n; i ++ ) {
-			while ( m > 1 && sign( ( q[m - 1] - q[m - 2] ) ^ ( p[i] - q[m - 2] ) )
-							<= 0 )
+			while ( m > 1 && sign( ( q[m - 1] - q[m - 2] ) ^ ( p[i] - q[m - 2] ) )<= 0 )
 				m -- ;
 			q[m ++ ] = p[i];
 		}
 		int k = m;
 		for ( int i = n - 2; i >= 0; i -- ) {
-			while ( m > k && sign( ( q[m - 1] - q[m - 2] ) ^ ( p[i] - q[m - 2] ) )
-							<= 0 )
+			while ( m > k && sign( ( q[m - 1] - q[m - 2] ) ^ ( p[i] - q[m - 2] ) )<= 0 )
 				m -- ;
 			q[m ++ ] = p[i];
 		}
@@ -53,10 +51,9 @@
 		double maxd = 0;
 		p.push_back( p[0] );
 		for ( int i = 0; i < n; i ++ ) {
-			while ( ( ( p[i + 1] - p[i] ) ^ ( p[j + 1] - p[i] ) )
-							> ( ( p[i + 1] - p[i] ) ^ ( p[j] - p[i] ) ) )
+			while ( ( ( p[i + 1] - p[i] ) ^ ( p[j + 1] - p[i] ) )> ( ( p[i + 1] - p[i] ) ^ ( p[j] - p[i] ) ) )
 				j = ( j + 1 ) % n;
-			maxd = max( maxd, max( p[i].dis( p[j] ), p[i + 1].dis( p[j + 1] ) ) );
+			cmax( maxd, max( p[i].dis( p[j] ), p[i + 1].dis( p[j + 1] ) ) );
 		}
 		return maxd;
 	}
