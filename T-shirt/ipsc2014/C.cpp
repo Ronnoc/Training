@@ -49,21 +49,14 @@ int main(){
 	for(int CASE=1;CASE<=T;++CASE){
 		int n;
 		scanf("%d",&n);
-		map<int,int>M;
 		set<int>S;
 		vector<int>L;
 		for(i=1;i<=n;i++)scanf("%d",&a[i]);
-		for(i=1;i<=n;){
-			if(S.count(a[i])){
-				int z=M[a[i]];
-				int j=i;
-				i+=j-z;
+		for(i=1;i<=n;i++){
+			if(S.count(a[i]))
 				continue;
-			}
 			S.insert(a[i]);
-			M[a[i]]=i;
 			L.PB(a[i]);
-			i++;
 		}
 		printf("%d",L[0]);
 		for(i=1;i<L.SZ;i++)
