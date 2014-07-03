@@ -1,124 +1,47 @@
 /*
 ID: kybconn1
-PROG: transform
+PROG: milk2
 LANG: C++
 */
 #include<stdio.h>
-#include<algorithm>
 #include<vector>
+#include<algorithm>
 using namespace std;
-struct at{
-	int x,y;
-	bool operator <(const at &tp)const{
-		if(x-tp.x)return x<tp.x;
-		return y<tp.y;
-		}
-	bool operator==(const at &tp)const
-		{return x==tp.x&&y==tp.y;}
+struct farmer{
+	int l,r;
+	bool operator<(const farmer &tp)const
+		{return l<tp.l;}
 	}tp;
-int n;
-vector<at>L,R;
-vector<at>::iterator iter;
-void out(at tp){printf("%d %d\n",tp.x,tp.y);}
+vector<farmer>L;
 int main(){
-	freopen("transform.in","r",stdin);
-	freopen("transform.out","w",stdout);
-	char s[10];
-	int i,j;
+	freopen("milk2.in","r",stdin);
+	freopen("milk2.out","w",stdout);
+	int n;
 	while(scanf("%d",&n)!=EOF){
-		for(i=0;i<n;i++){
-			scanf("%s",s);
-			for(j=0;j<n;j++)if(s[j]=='@'){
-				tp.x=i;tp.y=j;
-				L.push_back(tp);
-				}
-			}
-		for(i=0;i<n;i++){
-			scanf("%s",s);
-			for(j=0;j<n;j++)if(s[j]=='@'){
-				tp.x=i;tp.y=j;
-				R.push_back(tp);
-				}
+		int i;
+		L.clear();
+		for(i=1;i<=n;i++){
+			scanf("%d%d",&tp.l,&tp.r);
+			L.push_back(tp);
 			}
 		sort(L.begin(),L.end());
-		sort(R.begin(),R.end());
-		if(L.size()!=R.size()){printf("7\n");continue;}	
-		int flag=1;
-		for(i=0;i<L.size();i++){
-			tp.x=L[i].y;
-			tp.y=n-1-L[i].x;
-			iter=lower_bound(R.begin(),R.end(),tp);
-			if(!(*iter==tp))flag=0;
-		//	if(flag)out(*iter);
-			}	
-		if(flag){printf("1\n");continue;}
-		
-		flag=1;
-		for(i=0;i<L.size();i++){
-			tp.x=n-1-L[i].x;
-			tp.y=n-1-L[i].y;
-			iter=lower_bound(R.begin(),R.end(),tp);
-			if(!(*iter==tp))flag=0;
-			}	
-		if(flag){printf("2\n");continue;}
-		
-		flag=1;
-		for(i=0;i<L.size();i++){
-			tp.x=n-1-L[i].y;
-			tp.y=L[i].x;
-			iter=lower_bound(R.begin(),R.end(),tp);
-			if(!(*iter==tp))flag=0;
-			}	
-		if(flag){printf("3\n");continue;}	
-		
-		flag=1;
-		for(i=0;i<L.size();i++){
-			tp.x=L[i].x;
-			tp.y=n-1-L[i].y;
-			iter=lower_bound(R.begin(),R.end(),tp);
-			if(!(*iter==tp))flag=0;
-			}	
-		if(flag){printf("4\n");continue;}
-		
-		int lx,ly;
-		flag=1;
-		for(i=0;i<L.size();i++){
-			lx=L[i].x;
-			ly=n-1-L[i].y;
-			tp.x=ly;
-			tp.y=n-1-lx;
-			iter=lower_bound(R.begin(),R.end(),tp);
-			if(!(*iter==tp))flag=0;
-			}	
-		if(flag){printf("5\n");continue;}
-		
-		flag=1;
-		for(i=0;i<L.size();i++){
-			lx=L[i].x;
-			ly=n-1-L[i].y;
-			tp.x=n-1-lx;
-			tp.y=n-1-ly;
-			iter=lower_bound(R.begin(),R.end(),tp);
-			if(!(*iter==tp))flag=0;
-			}	
-		if(flag){printf("5\n");continue;}
-		
-		flag=1;
-		for(i=0;i<L.size();i++){
-			lx=L[i].x;
-			ly=n-1-L[i].y;
-			tp.x=n-1-ly;
-			tp.y=lx;
-			iter=lower_bound(R.begin(),R.end(),tp);
-			if(!(*iter==tp))flag=0;
-			}	
-		if(flag){printf("5\n");continue;}
-		
-		flag=1;
-		for(i=0;i<L.size();i++)if(!(L[i]==R[i]))flag=0;
-		if(flag){printf("6\n");continue;}
-					
-		printf("7\n");
+		int x=0,y=0;
+		int minl=L[0].l,maxr=L[0].r;
+		x=maxr-minl;
+		for(i=1;i<L.size();i++){
+			if(L[i].l>maxr){
+				y=max(y,L[i].l-maxr);
+				x=max(x,L[i].r-L[i].l);
+				maxr=L[i].r;
+				minl=L[i].l; 
+				}
+			else {
+				if(L[i].r<=maxr)continue;
+				maxr=L[i].r;
+				x=max(x,maxr-minl);
+				}
+			}
+		printf("%d %d\n",x,y);
 		}
 	return 0;
 	}
