@@ -11,7 +11,7 @@
 		}
 		double operator ^( const point &p )const {return x*p.y-y*p.x;} //叉积
 		double operator *( const point &p )const {return x*p.x+y*p.y;} //点积
-		int len() {return sqrt( x*x+y*y );}
+		double len() {return sqrt( x*x+y*y );}
 		double arc() {return atan2( y, x );}
 		point normal() {return ( *this ) / this->len();}
 		point rotate() {return point( -y, x );}
@@ -78,7 +78,7 @@
 		is=( p1*n-p2*m )/( n-m );
 		return 1;
 	}
-	int HalfPlaneCross( line *l,int n,point *poly ) {
+	int HalfsflCross( line *l,int n,point *poly ) {
 		sort( l,l+n );
 		int first,last;
 		point p[n];
@@ -108,15 +108,15 @@
 **4 三维凸包**
 >验题:poj3528
 
-	struct spoint {
+	struct spt {
 		double x,y,z;
-		spoint() {}
-		spoint( double _x,double _y,double _z ):x( _x ),y( _y ),z(_z) {}
-		spoint operator +( const spoint &s )const {return spoint( x+s.x,y+s.y,z+s.z );} //{-,*,/}
+		spt() {}
+		spt( double _x,double _y,double _z ):x( _x ),y( _y ),z(_z) {}
+		spt operator +( const spt &s )const {return spt( x+s.x,y+s.y,z+s.z );} //{-,*,/}
 		double len()const {return sqrt( SQ( x )+SQ( y )+SQ(z) );}
-		double operator *( const spoint &s )const {return x*s.x+y*s.y+z*s.z;} //点积
-		spoint operator ^( const spoint &s )const {	//叉积
-			spoint ret;
+		double operator *( const spt &s )const {return x*s.x+y*s.y+z*s.z;} //点积
+		spt operator ^( const spt &s )const {	//叉积
+			spt ret;
 			ret.x=y*s.z-z*s.y;
 			ret.y=z*s.x-x*s.z;
 			ret.z=x*s.y-y*s.x;
@@ -124,12 +124,12 @@
 		}
 		void output() {printf( "%.6f %.6f %.6f\n",x,y,z );}
 	} ORI( 0,0,0 );
-	struct plane{
-		spoint u,v,w;
-		plane() {}
-		plane(spoint _u,spoint _v,spoint _w):u(_u),v(_v),w(_w) {}
+	struct sfl{
+		spt u,v,w;
+		sfl() {}
+		sfl(spt _u,spt _v,spt _w):u(_u),v(_v),w(_w) {}
 	};
-	int SpaceConvexHull(spoint *s,int n,plane *p){
+	int SpaceConvexHull(spt *s,int n,sfl *p){
 		int vs[MXN][MXN];
 		vector<vector<int> >crt;
 		vector<vector<int> >::iterator it;
@@ -158,7 +158,7 @@
 		}
 		int m=0;
 		for(int i=0;i<crt.SZ;i++)
-			p[m++]=plane(s[crt[i][0]],s[crt[i][1]],s[crt[i][2]]);
+			p[m++]=sfl(s[crt[i][0]],s[crt[i][1]],s[crt[i][2]]);
 		return m;
 	}
 
@@ -230,4 +230,39 @@
 					}
 			}
 		return ans;
+	}
+	
+**6 三维操作**
+
+	struct sfl {
+		spt p,o;
+		sfl() {}
+		sfl( spt _p,spt _o ):p( _p ),o( _o ) {}
+		sfl( spt u,spt v,spt w ) {p=u,o=( ( v-u )^( w-u ) ).normal();}
+	};
+	double disLP( spt p1,spt p2,spt q ) {
+		return fabs( ( ( p2-p1 )^( q-p1 ) ).len()/( ( p2-p1 ).len() ) );
+	}
+	double disLL( spt p1,spt p2,spt q1,spt q2 ) {
+		spt p=q1-p1,u=p2-p1,v=q2-q1;
+		double d=( u*u )*( v*v )-SQ( u*v );
+		if ( sign( d )==0 )return disLP( q1,q2,p1 );
+		double s=( ( p*u )*( v*v )-( p*v )*( u*v ) )/d;
+		return disLP( q1,q2,p1+u*s );
+	}
+	bool isFL( sfl f,spt q1,spt q2,spt &is ) {
+		double a=f.o*( q2-f.p ),b=f.o*( q1-f.p );
+		double d=a-b;
+		if ( sign( d )==0 )return 0;
+		is=( q1*a-q2*b )/d;
+		return 1;
+	}
+	bool isFF( sfl a,sfl b,spt &is1,spt &is2 ) {
+		spt e=a.o^b.o;
+		spt v=a.o^e;
+		double d=b.o*v;
+		if ( sign( d )==0 )return 0;
+		is1=a.p+v*( b.o*( b.p-a.p ) )/d;
+		is2=is1+e;
+		return 1;
 	}
