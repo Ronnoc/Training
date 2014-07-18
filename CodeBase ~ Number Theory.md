@@ -45,60 +45,77 @@
 
 
 **4 Millar素数测试 && rho大整数因数分解**
->验题: poj 2429
+>验题: poj 2447
 
-	//	Miller_Rabin 算法进行素数测试，速度快，而且可以判断 <2^63的数
-	const int S=20;//随机算法判定次数，S越大，判错概率越小
-	//以a为基,n-1=x*2^t      a^(n-1)=1(mod n)  验证n是不是合数
-	bool check (LL a,LL n,LL x,LL t) {
-		LL ret=power (a,x,n);								//power,llpro
-		LL last=ret;
-		for (int i=1; i<=t; i++) {
-			ret=llpro (ret,ret,n);
-			if (ret==1&&last!=1&&last!=n-1) return true; //合数
+	const int S=20;
+	inline LL mutiMod( LL a,LL b,LL c ) { //返回(a*b) mod c,a,b,c<2^63
+		a%=c,b%=c;
+		LL ret=0;
+		while ( b ) {
+			if ( b&1 ) {
+				ret+=a;
+				if ( ret>=c ) ret-=c;
+			}
+			a<<=1,b>>=1;
+			if ( a>=c ) a-=c;
+		}
+		return ret;
+	}
+	inline LL powMod( LL x,LL n,LL mod ) { //返回x^n mod c ,非递归版
+		LL ret=1;
+		while ( n ) {
+			if ( n&1 )ret=mutiMod( ret,x,mod );
+			x=mutiMod( x,x,mod );
+			n>>=1;
+		}
+		return ret;
+	}
+	bool check( LL a,LL n,LL x,LL t ) { //以a为基，n-1=x*2^t，检验n是不是合数
+		LL ret=powMod( a,x,n ),last=ret;
+		for ( int i=1; i<=t; i++ ) {
+			ret=mutiMod( ret,ret,n );
+			if ( ret==1&& last!=1&& last!=n-1 ) return 1;
 			last=ret;
 		}
-		if (ret!=1) return true;
-		return false;
+		if ( ret!=1 ) return 1;
+		return 0;
 	}
-	bool Miller_Rabin (LL n) {
-		if (n<2) return false;
-		if (n==2) return true;
-		if ( (n&1) ==0) return false; //偶数
-		LL x=n-1, t=0;
-		while ( (x&1) ==0) {x>>=1; t++;}
-		for (int i=0; i<S; i++) {
-			LL a=rand() % (n-1) +1;		//rand()需要stdlib.h头文件	(rand64())
-			if (check (a,n,x,t))return false;	//合数
+	bool Miller_Rabin( LL n ) {
+		LL x=n-1,t=0;
+		while ( ( x&1 )==0 ) x>>=1,t++;
+		bool flag=1;
+		if ( t>=1&& ( x&1 )==1 ) {
+			for ( int k=0; k<S; k++ ) {
+				LL a=rand()%( n-1 )+1;
+				if ( check( a,n,x,t ) ) {flag=1; break;}
+				flag=0;
+			}
 		}
-		return true;
+		if ( !flag || n==2 ) return 0;
+		return 1;
 	}
-	long long factor[300];//质因数分解结果（刚返回时是无序的）
-	int tol;//质因数的个数。数组小标从0开始
-	long long Pollard_rho (long long x,long long c) {
-		long long i=1,k=2;
-		long long x0=rand() %x;
-		long long y=x0;
-		while (1) {
-			i++;
-			x0= (mult_mod (x0,x0,x) +c) %x;
-			long long d=__gcd (y-x0,x);
-			if (d!=1&&d!=x) return d;
-			if (y==x0) return x;
-			if (i==k) {y=x0; k+=k;}
+	vector<LL>factor;			  	//需要clear
+	LL Pollard_rho( LL x,LL c ) {
+		LL i=1,x0=rand()%x,y=x0,k=2;
+		while ( i++ ) {
+			x0=( mutiMod( x0,x0,x )+c )%x;
+			LL d=__gcd( y>x0?y-x0:x0-y,x );
+			if ( d!=1&& d!=x ) return d;
+			if ( y==x0 ) return x;
+			if ( i==k ) y=x0,k<<=1;
 		}
 	}
-	//对n进行素因子分解，调用前tol=0，n==1需要特判
-	void findfac (long long n) {
-		if (Miller_Rabin (n)) { //素数
-			factor[tol++]=n;
+	void findfac( LL n ) {        	//递归进行质因数分解N
+		if ( !Miller_Rabin( n ) ) {
+			factor.PB( n );
 			return;
 		}
-		long long p=n;
-		while (p>=n) p=Pollard_rho (p,rand() % (n-1) +1);
-		findfac (p);
-		findfac (n/p);
+		LL p=n;
+		while ( p>=n ) p=Pollard_rho( p,rand() % ( n-1 ) +1 );
+		findfac( p );
+		findfac( n/p );
 	}
+
 
 **5 阶乘||组合数 取模**
 >验题:未验
@@ -185,53 +202,37 @@
 	}
 
 **9 离散对数**
->验题:未验
+>验题:poj3243,hdu2815
 
-	//a^x = b mod c;
-	#define MAXN 65536
-	#define LL long long
-	struct LINK {
-		LL data;
-		LL j;
-		LL next;
-	} HASH_LINK[1000000];
-	LL ad, head[MAXN];
-	LL bady_step_giant_step (LL a, LL b, LL c) {
-		LL i, buf, m, temp, g, D, x, y, n = 0;
-		for (i = 0, buf = 1; i < 100; i ++, buf = buf * a % c)
-			if (buf == b) return i;
-		D = 1;
-		while ( (g = __gcd (a, c)) != 1) {
-			if (b % g) return -1;
-			b /= g,c /= g;
-			D = D * a / g % c;
-			++ n;
+	int extBSGS( int A,int B,int C ) { //A^x==B mod C
+		for ( int i=0,tmp=1%C; i<100; i++,tmp=1LL*tmp*A%C )if ( tmp==B )return i;
+		int temp;
+		LL D=1%C;
+		int d=0;
+		while ( ( temp=__gcd( A,C ) )!=1 ) {
+			if ( B%temp )return -1;
+			C/=temp,B/=temp;
+			d++;
+			D=1LL*A/temp*D%C;
 		}
-		memset (head, -1, sizeof (head));
-		ad = 0;
-		m = ceil (sqrt ( (long double) c));
-		for (i = 0, buf = 1; i <= m; buf = buf * a % c, i ++) {
-			LL hs = buf % MAXN, tail;
-			int jump = 0;
-			for (tail = head[hs]; ~tail; tail = HASH_LINK[tail]. next)
-				if (buf == HASH_LINK[tail]. data) {
-					jump = 1;
-					break;
-				}
-			if (jump) continue;
-			HASH_LINK[ad]. data = buf;
-			HASH_LINK[ad]. j    = i;
-			HASH_LINK[ad]. next = head[hs];
-			head[hs] = ad ++;
+		int s=( int )ceil( sqrt( C+eps ) )+1;
+		vector<PII>L;
+		LL G=1%C;
+		for ( int i=0; i<s; i++ ) {
+			L.PB( MP( G,i ) );
+			G=G*A%C;
 		}
-		for (i = 0, temp = power (a, m, c), buf = D; i <= m; i ++, buf = temp * buf % c) {//power
-			extGcd (buf, c, x, y);											              //extGcd
-			x = ( (x * b) % c + c) % c;
-			for (LL tail = head[int (x % MAXN)]; ~tail; tail = HASH_LINK[tail].next)
-				if (HASH_LINK[tail]. data == x) return HASH_LINK[tail].j + n + i * m;
+		SORT( L );
+		for ( int i=0; i<=s; i++ ) {
+			int tmp=modInv( D,C )*B%C;
+			int id=lower_bound( L.OP,L.ED,MP( tmp,-1 ) )-L.OP;
+			if ( id<L.SZ&&id>=0&&L[id].AA==tmp )
+				return i*s+L[id].BB+d;
+			D=D*G%C;
 		}
 		return -1;
 	}
+
 
 
 **10 莫比乌斯**
