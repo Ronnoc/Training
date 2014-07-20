@@ -1,6 +1,6 @@
 **1 扩展欧几里得**
 >ax+by==gcd(a,b)的解
->验题: poj 1061
+>验题: poj1061
 
 	LL extGcd (LL a, LL b, LL &x, LL &y) {
 		LL ret = a;
@@ -13,7 +13,7 @@
 	}
 
 **2 逆元**
->验题:未验
+>验题: poj2447
 
 	//用于m不是质数 gcd(a,m)==1时有逆元
 	LL modInv (LL a, LL m) {
@@ -22,33 +22,12 @@
 		return (m+x%m)%m;
 	}
 	//if m为质数 [费马小定理]a^(m-1)=1 mod m ==>a^(m-2)是a关于m的逆元
-	
-**3 因数分解&&质因数分解**
->验题: 未验
 
-	//prime_factor()传入n, 返回不同质因数的个数
-	//f存放质因数，nf存放对应质因数的个数
-	#define MAXN 2001000
-	#define PSIZE 100000
-	int plist[PSIZE], pcount = 0; //质数表
-	int prime_factor (int n, int* f, int *nf) {
-		int cnt = 0;
-		int n2 = sqrt ( (double) n);
-		for (int i = 0; n > 1 && plist[i] <= n2; ++i)
-			if (n % plist[i] == 0) {
-				for (nf[cnt] = 0; n % plist[i] == 0; ++nf[cnt], n /= plist[i]);
-				f[cnt++] = plist[i];
-			}
-		if (n > 1) nf[cnt] = 1, f[cnt++] = n;
-		return cnt;
-	}
-
-
-**4 Millar素数测试 && rho大整数因数分解**
+**3 Millar素数测试 && rho大整数因数分解**
 >验题: poj 2447
 
 	const int S=20;
-	inline LL mutiMod( LL a,LL b,LL c ) { //返回(a*b) mod c,a,b,c<2^63
+	LL mutiMod( LL a,LL b,LL c ) { //返回(a*b) mod c,a,b,c<2^63
 		a%=c,b%=c;
 		LL ret=0;
 		while ( b ) {
@@ -61,7 +40,7 @@
 		}
 		return ret;
 	}
-	inline LL powMod( LL x,LL n,LL mod ) { //返回x^n mod c ,非递归版
+	LL powMod( LL x,LL n,LL mod ) { //返回x^n mod c ,非递归版
 		LL ret=1;
 		while ( n ) {
 			if ( n&1 )ret=mutiMod( ret,x,mod );
@@ -117,8 +96,8 @@
 	}
 
 
-**5 阶乘||组合数 取模**
->验题:未验
+**4 阶乘||组合数 取模**
+>验题:浙大shi哥译书
 
 	int fact[MAX_P];	//预处理n! mod p 的表 O(n)
 	// n!=a*p^e return a%p
@@ -142,7 +121,7 @@
 		return a1 * modInv (a2 * a3 % p, p) % p;
 	}
 
-**6 欧拉函数**
+**5 欧拉函数**
 >验题: poj 1284
 
 	int eulerPhi (int n) {
@@ -155,7 +134,6 @@
 		if (n != 1) res = res / n * (n - 1);
 		return res;
 	}
-
 	int euler[MAX_N];
 	void tableEuler (int n) {
 		for (int i = 0; i < n; i++)
@@ -166,7 +144,7 @@
 	}
 
 **7 模同余方程组**
->验题:未验
+>验题:浙大shi哥译书
 
 	//a_i*x=b_i {%m_i}  m_i可以不互质
 	//pair<b,m>			x=b {%m}
@@ -182,26 +160,7 @@
 		return MP (x % m, m);
 	}
 
-**8 阶乘最后非零位**
->验题: 未验
-
-	//求阶乘最后非零位,复杂度O(nlogn),返回该位,n以字符串方式传入
-	int lastdigit(char* buf){
-		const int mod[20]={1,1,2,6,4,2,2,4,2,8,4,4,8,4,6,8,8,6,8,2};
-		int len=strlen(buf),a[MAXN],i,c,ret=1;
-		if (len==1)
-			return mod[buf[0]-'0'];
-		for (i=0;i<len;i++)
-			a[i]=buf[len-1-i]-'0';
-		for (;len;len-=!a[len-1]){
-			ret=ret*mod[a[1]%2*10+a[0]]%5;
-			for (c=0,i=len-1;i>=0;i--)
-				c=c*10+a[i],a[i]=c/5,c%=5;
-		}
-		return ret+ret%2*5;
-	}
-
-**9 离散对数**
+**8 离散对数**
 >验题:poj3243,hdu2815
 
 	int extBSGS( int A,int B,int C ) { //A^x==B mod C
@@ -234,8 +193,7 @@
 	}
 
 
-
-**10 莫比乌斯**
+**9 莫比乌斯**
 >验题:未验
 
 	map<int,int> moebius (LL n) {
@@ -248,7 +206,6 @@
 				while (n%i==0) n/=i;
 			}
 		if (n!=1) prime.push_back (n);
-		
 		int m=prime.size();
 		for (int i=0; i< (1<<m); i++) {
 			int mu=1,d=1;
@@ -263,16 +220,8 @@
 		return res;
 	}
 
-	memset(mul,0,sizeof mul);
-	for(i=1;i<=N;i++){
-		if(i==1)mul[i]=1;
-		else mul[i]*=-1;
-		for(j=i*2;j<=N;j+=i)
-			mul[j]+=mul[i];
-	}
-	
 	int mu[N], p[N], pn;
-	bool flag[N];
+	bool flag[N];	//true为合数
 	void init() {
 			pn = 0;
 			mu[1] = 1;

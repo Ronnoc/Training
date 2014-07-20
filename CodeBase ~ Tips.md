@@ -10,7 +10,7 @@
 			 ∑ i^d mod p^c =    ∑ g^(d*i) mod p^c
 			i=0				   i=0
 
-	p是非2质数,或1,2,4,g是p的原根(g^(p-1)==1 mod p,g^i构成p的一个模剩余系)<br>
+	p是非2质数,或1,2,4;g是p的原根(g^(p-1)==1 mod p,g^i构成p的一个模剩余系)<br>
 	对于2^c (c>3) 有结论 if(d&1)return 0;else return llpow(2,c-1,2^c);
  4. 格点简单多边形面积S,边上格点数B,内部格点数I满足S=B/2+I-1
  5. 四面体O-ABC体积公式a = AB, b = BC, c = CA, d = OC, e = OA, f = OB<br>
@@ -47,19 +47,12 @@
 		a_n= ∑ comb(n,k)b_k <==> b_n= ∑ (-1)   comb(n,k)a_k   
 		    k=0                      k=0                    
 
- 13. 平方剩余定理: 奇素数p,x^2==a mod p 有解 <==> a^((p-1)/2)==1 mod p
+ 13. 二次剩余: 奇素数p,x^2==a mod p 有解 <==> a^((p-1)/2)==1 mod p
  14. 阶乘近似 n! 约等于 sqrt(2nPI)(n/e)^n
  15. 数值积分:
 	∫_a^b f(x)dx = h/3( f(x[0]) + 2∑{j=1~n/2-1}f(x[2j]) + 4∑{j=1~n/2}f(x[2j-1]) + f(x[n]))
  16.	集合位运算
 
-		S = 0;				//empty
-		S = 1 << i;			//{i}
-		S = (1 << n) - 1;	//{0,1,..,n-1}
-		if (S >> i & 1);	//check whether i belong to S
-		S | 1 << i;			//add i to S
-		S & ~ (1 << i);		//delete i from S
-		for (int i = 0; i < 1 << n ; i++);		//枚举子集
 		//降序枚举任意集合子集
 			int sub = S;
 			do {
@@ -73,6 +66,7 @@
 				int x = sub & -sub, y = sub + x;
 				sub = (sub & ~y) / x >> 1 | y;
 			}
+
  17. 求和公式
 	
 		1. sum( k ) = n(n+1)/2
@@ -93,3 +87,14 @@
  
 		|G|*P=∑{g∈G}k^nc(g)
  21. CRT:`x%m_i=a_i,M=∏m_i,M_i=M/m_i,t_i*M_i%m_i=1 => x=∑a_i*t_i*M_i`
+ 22. f(n)=a*f(n-1)+b*f(n-2),求f(n)%p的循环节
+
+		1.对p进行质因数分解，p = p1^a1 * p2^a2 * p3^a3 ... * pn^an
+		2.分别求 p1^a1,p2^a2,...,pn^an的循环节，然后取最小公倍数
+		2.1 p mod px^ax 的循环节 = G(px) * px^(ax-1) , G(px) 就是 p mod px 的最小循环节
+		2.2 对于递推式，我们可以得到特征根方程 x^2=a*x+b ,delta=a*a+4*b
+		2.3 对于G(px),如果delta是模px的二次剩余，G(px)是px-1的因子，否则G(px)是(px-1)*(px+1)的因子,矩阵快乘暴力判断
+		2.3.1 iff a^[(p-1)/2]=1 mod p , a是p的二次剩余
+		
+
+ 23.  

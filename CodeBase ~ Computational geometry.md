@@ -162,7 +162,7 @@
 		return m;
 	}
 
-**4 多边形与圆面积交**
+**4 多边形与一个圆面积交**
 >验题:poj3675
 
 	double area2( point pa,point pb ) {

@@ -30,13 +30,7 @@
 				reader = new BufferedReader( new InputStreamReader( System.in ) );
 				tokenizer = null;
 				writer = new PrintWriter( System.out );
-				int t = 10000;
-				for ( int i = 1; i <= t; i ++ ) {
-					if ( !this.hasNext() )
-						break;
-					System.out.print( "Case " + i + ": " );
 					solve();
-				}
 				reader.close();
 				writer.close();
 			} catch ( Exception e ) {
