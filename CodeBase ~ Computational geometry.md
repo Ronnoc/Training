@@ -266,3 +266,49 @@
 		is2=is1+e;
 		return 1;
 	}
+
+**7 平面最近点对**
+> 验题:zoj 2107
+
+	const int MAXN = int ( 1e5 + 10 );
+	double closed;
+	struct Point {
+		double x, y;
+		int id;
+	};
+	Point pts[MAXN],lP[MAXN],rP[MAXN];
+	struct cmpY {
+		bool operator()( const Point &lhs, const Point &rhs ) {
+			return lhs.y < rhs.y;
+		}
+	};
+	struct cmpX {
+		bool operator()( const Point &lhs, const Point &rhs ) {
+			return lhs.x < rhs.x;
+		}
+	};
+	double dist( const Point &pt1, const Point &pt2 ) {
+		return sqrt( SQ( pt1.x - pt2.x ) + SQ( pt1.y - pt2.y ) );
+	}
+	void findNearest( int l, int r ) {
+		if ( r<=l ) return;
+		int mid = l + r >> 1;
+		findNearest( l, mid );
+		findNearest( mid + 1, r );
+		int lm = mid, rm = mid + 1;
+		while ( lm - 1 >= l && pts[mid].x - pts[lm - 1].x < closed ) --lm;
+		while ( rm + 1 <= r && pts[rm + 1].x - pts[mid].x < closed ) ++rm;
+		int nlP = 0, nrP = 0;
+		for ( int i = lm; i <= mid; ++i ) lP[nlP++] = pts[i];
+		for ( int i = mid + 1; i <= rm; ++i ) rP[nrP++] = pts[i];
+		sort( lP, lP + nlP, cmpY() );
+		sort( rP, rP + nrP, cmpY() );
+		int j = 0;
+		for ( int i = 0; i < nlP; ++i ) {
+			while ( j < nrP && rP[j].y < lP[i].y ) ++j;
+			for ( int k = j - 2; k <= j + 2; ++k ) {
+				if ( k < 0 || k >= nrP ) continue;
+				closed=min( dist( lP[i], rP[k] ),closed );
+			}
+		}
+	}
