@@ -1,22 +1,5 @@
 **1 JAVA I/O**
-
-	public class Main {
-		static StreamTokenizer in = new StreamTokenizer(new BufferedReader(
-				new InputStreamReader(System.in)));
-		static PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-	
-		public static void main(String[] args) throws IOException {
-			int T=nextInt();
-			out.flush(); // 刷新缓冲区 输出结果
-			out.close();
-		}
-		 static int nextInt() throws IOException {
-			in.nextToken();
-			return (int) in.nval;
-		}
-	}
-
-*based on Petr's template*
+>based on Petr's template
 
 	public class Main implements Runnable {
 		public static void main( String[] args ) {
@@ -30,8 +13,9 @@
 				reader = new BufferedReader( new InputStreamReader( System.in ) );
 				tokenizer = null;
 				writer = new PrintWriter( System.out );
-					solve();
+				solve();
 				reader.close();
+				writer.flush();
 				writer.close();
 			} catch ( Exception e ) {
 				e.printStackTrace();
@@ -79,3 +63,9 @@
 			return new BigInteger( tokenizer.nextToken() );
 		}
 	}
+
+**2 栈空间**
+
+    int size = 256<<20;	//256MB
+    char *p = (char*)malloc(size) + size;
+    __asm__("movl %0, %%esp\n" :: "r"(p) );

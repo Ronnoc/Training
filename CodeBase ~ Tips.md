@@ -27,7 +27,7 @@
 <br>7.3 Bell[n]=∑Stirling2[n,k]
  8. 第一类Stirling数:将n个物体排成k个非空循环排列的方法数
 <br>Stirling1[n,k]=(n-1)*Stirling1[n-1,k]+Stirling1[n-1,k-1]
- 9. 第一类Stirling数:将n个物体划分成k个非空的不可辨别的集合的方法数
+ 9. 第二类Stirling数:将n个物体划分成k个非空的不可辨别的集合的方法数
 <br>Stirling2[n,k]=k*Stirling2[n-1,k]+Stirling2[n-1,k-1]
  10. 容斥反演:
 
@@ -97,4 +97,6 @@
 		2.3.1 iff a^[(p-1)/2]=1 mod p , a是p的二次剩余
 		
 
- 23.  
+ 23. `for(inv[1]=1,i=2;i<10000;i++)inv[i] = inv[MOD%i]*(MOD-MOD/i) % MOD;` (MOD是质数)
+ 24. 求原根:t=欧拉函数(n).质因数分解t:p(1),...,p(k).从2开始枚举m,计算m^(t/p(i))%n.如果k个结果都不是1则是原根
+ 25. 多分数的lcm为分子lcm/分母gcd

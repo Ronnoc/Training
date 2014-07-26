@@ -1,5 +1,5 @@
 **1 kdTree**
->验题: hdu4347:O
+>验题: hdu4347
 
 	const int N = 100000+10;
 	int K,iCmp,nTid;
@@ -15,25 +15,12 @@
 			for ( int i=0; i<K; i++ )if ( o[i]<L[i]||o[i]>R[i] )return 0;
 			return 1;
 		}
-		bool ok( const Filter &f )const {
-			for ( int i=0; i<K; i++ )
-				if ( f.L[i]<L[i]||f.R[i]>R[i] )return 0;
-			return 1;
-		}
-		void merge( const Filter &f ) {
-			for ( int i=0; i<K; i++ )cmax( R[i],f.R[i] );
-			for ( int i=0; i<K; i++ )cmin( L[i],f.L[i] );
-		}
 	};
 	struct Node {
 		Obj u;
-		Filter f;
 		int c;
 		Node *ls,*rs;
 		void update() {
-			f.L=f.R=u;
-			if ( ls )f.merge( ls->f );
-			if ( rs )f.merge( rs->f );
 		}
 	};
 	Node kd[N<<2],*root;
@@ -42,7 +29,7 @@
 	}
 	Node *newNode( const Obj &u,int c ) {
 		Node &G=kd[nTid++];
-		G.u=u; 
+		G.u=u;
 		G.c=c;
 		G.ls=G.rs=0;
 		return &G;
@@ -59,11 +46,11 @@
 		return G;
 	}
 	void queryF( Node *p,const Filter &f ) {
-		if ( !p )return;											//空树
-		if ( f.ok( p->f ) ) {return;} 				//子树可行
+		if ( !p )return;                       //空树
+		if ( f.ok( p->u ) ){}                  //结点可行
 		int x=p->u[p->c];
-		if ( x>=f.L[p->c] )queryF( p->ls,f ); //左子树
-		if ( x<=f.R[p->c] )queryF( p->rs,f );	//右子树
+		if ( x>=f.L[p->c] )queryF( p->ls,f );  //左子树
+		if ( x<=f.R[p->c] )queryF( p->rs,f );  //右子树
 	}
 	priority_queue<pair<double,Obj>  >Ans;
 	void queryO( Node *p,Obj &o,int m ) {
@@ -88,4 +75,81 @@
 		root=build( p,0,p.SZ,0 );
 	}
 
-	
+**2 BIT**
+>?
+
+	int BIT[MXN+10];
+	int LB( int w ) {return w&( -w );}
+	LL query( int w ) {
+		LL ret=0;
+		for ( w+=5; w>0; w-=LB( w ) )ret+=BIT[w];
+		return ret;
+	}
+	void update( int w,int d ) {
+		for ( w+=5; w<MXN; w+=LB( w ) )BIT[w]+=d;
+	}
+
+**3 SGT**
+>?
+
+	const int MXN = 10000 + 10;
+	struct SEG {
+		int l,r,m,lazy;
+		SEG() {}
+		SEG( int _l,int _r ) {l=_l,r=_r;}
+	} SGT[MXN<<2];
+	void create( SEG &T,int t ) {
+		T.m=0;
+		T.lazy=0;
+	}
+	void fresh( SEG &T,SEG &L,SEG &R ) {
+	}
+	void build( int id,int l,int r ) {
+		SGT[id]=SEG( l,r );
+		int mid=( l+r )/2;
+		if ( l!=r ) {
+			build( id*2,l,mid );
+			build( id*2+1,mid+1,r );
+			fresh( SGT[id],SGT[id<<1],SGT[id<<1|1] );
+		} else create( SGT[id],l );
+	}
+	void update( int id,int l,int r,int w ) {
+		SEG &T=SGT[id];
+		int mid=( T.l+T.r )/2;
+		if ( T.l==l&&T.r==r ) {
+			T.m=w;
+			return;
+		}
+		if ( T.lazy ) {
+			update( id<<1,T.l,mid,T.lazy );
+			update( id<<1|1,mid+1,T.r,T.lazy );
+			T.lazy=0;
+		}
+		if ( r<=mid )update( id<<1,l,r,w );
+		else if ( l>mid )update( id<<1|1,l,r,w );
+		else {
+			update( id<<1,l,mid,w );
+			update( id<<1|1,mid+1,r,w );
+		}
+		fresh( T,SGT[id<<1],SGT[id<<1|1] );
+	}
+	void query( int id,SEG &A ) {
+		SEG &T=SGT[id];
+		if ( T.lazy ) {
+			int mid=(T.l+T.r)/2;
+			update( id<<1,T.l,mid,T.lazy );
+			update( id<<1|1,mid+1,T.r,T.lazy );
+			T.lazy=0;
+		}
+		if(T.l==A.l&&T.r==A.r){A=T;return;}
+		int mid=( T.l+T.r )/2;
+		if ( A.r<=mid )query( id<<1,A );
+		else if ( A.l>mid )query( id<<1|1,A );
+		else {
+			SEG L( A.l,mid ),R( mid+1,A.r );
+			query( id<<1,L );
+			query( id<<1|1,R );
+			fresh( A,L,R );
+		}
+	}
+

@@ -1,18 +1,19 @@
 **1 划分数**
->n划分为K个自然数的方案数<br>
->验题:未验
+>n划分为K个自然数的和的方案数<br>
+>验题:hdu4651
 
-	int dp[MAX_N];
-	int partition (int n) {
-		dp[0]=1;
-		for (int i=1; i<=n; i++) {
-			for (int j=1,r=1; i- (3*j*j-j) /2>=0; j++,r*=-1) {
-				dp[i]+=dp[i- (3*j*j-j) /2]*r;
-				if (i- (3*j*j+j) /2>=0)
-					dp[i]+=dp[i- (3*j*j+j) /2]*r;
+	LL dp[100010];
+	void partition( int n ) {
+		int i,j,r;
+		for ( dp[0]=1,i=1; i<=n; i++ ) {
+			dp[i]=0;
+			for ( j=1,r=1; i>=( 3*j*j-j )/2; j++,r*=-1 ) {
+				dp[i]+=dp[i-( 3*j*j-j )/2]*r;
+				if ( i>=( 3*j*j+j )/2 )
+					dp[i]+=dp[i-( 3*j*j+j )/2]*r;
+				dp[i]=dp[i]%MOD+MOD;
 			}
 		}
-		return dp[n];
 	}
 
 
@@ -22,19 +23,19 @@
 	//perm[0..n-1]为0..n-1的一个置换(排列)
 	//返回置换最小周期,num返回循环节个数
 	#define MAXN 1000
-	//gcd need
 	int polya (int* perm, int n, int& num) {
 		int i, j, p, v[MAXN] = {0}, ret = 1;
 		for (num = i = 0; i < n; i++)
 			if (!v[i]) {
 				for (num++, j = 0, p = i; !v[p = perm[p]]; j++)
 					v[p] = 1;
-				ret *= j / gcd (ret, j);
+				ret *= j / __gcd (ret, j);
 			}
 		return ret;
 	}
+
 **3 高斯消元**
->验题:未验
+>验题:hdu4870
 
 	//全主元gauss消去解a[][]x[]=b[]
 	//返回是否有唯一解,若有解在b[]中

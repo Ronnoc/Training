@@ -7,15 +7,14 @@
 		if (b) {
 			ret = extGcd (b, a % b, y, x);
 			y -= (a / b) * x;
-		} else
-			x = 1, y = 0;
+		} else x = 1, y = 0;
 		return ret;
 	}
 
 **2 逆元**
 >验题: poj2447
 
-	//用于m不是质数 gcd(a,m)==1时有逆元
+	//适用于m不是质数 gcd(a,m)==1时有逆元
 	LL modInv (LL a, LL m) {
 		LL x, y;
 		extGcd(a,m,x,y);
@@ -26,8 +25,9 @@
 **3 Millar素数测试 && rho大整数因数分解**
 >验题: poj 2447
 
-	const int S=20;
-	LL mutiMod( LL a,LL b,LL c ) { //返回(a*b) mod c,a,b,c<2^63
+	const int S=7;
+	LL cs[]={2,325,9375,28178,450775,9780504,1795265022};
+	LL mutiMod( LL a,LL b,LL c ) { //(a*b)mod c in 2^63(a,b>0)
 		a%=c,b%=c;
 		LL ret=0;
 		while ( b ) {
@@ -40,7 +40,7 @@
 		}
 		return ret;
 	}
-	LL powMod( LL x,LL n,LL mod ) { //返回x^n mod c ,非递归版
+	LL powMod( LL x,LL n,LL mod ) {
 		LL ret=1;
 		while ( n ) {
 			if ( n&1 )ret=mutiMod( ret,x,mod );
@@ -65,7 +65,7 @@
 		bool flag=1;
 		if ( t>=1&& ( x&1 )==1 ) {
 			for ( int k=0; k<S; k++ ) {
-				LL a=rand()%( n-1 )+1;
+				LL a=cs[k];
 				if ( check( a,n,x,t ) ) {flag=1; break;}
 				flag=0;
 			}
@@ -144,20 +144,21 @@
 	}
 
 **7 模同余方程组**
->验题:浙大shi哥译书
+>验题:poj2891
 
 	//a_i*x=b_i {%m_i}  m_i可以不互质
 	//pair<b,m>			x=b {%m}
-	pair<int, int> linearMod (const vector<int>&A, const vector<int>&B, const vector<int>&M) {
-		int x = 0, m = 1;
-		for (int i = 0; i < A.size(); i++) {
-			int a = A[i] * m, b = B[i] - A[i] * x, d = __gcd (M[i], a);
-			if (b % d) return MP (0, -1);
-			int t = b / d * modInv (a / d, M[i] / d) % (M[i] / d);
-			x = x + m * t;
-			m *= M[i] / d;
+	pair<LL,LL> linearMod( vector<LL>&A,vector<LL>&B,vector<LL>&M ) {
+		LL x=0,m=1;
+		for ( int i=0; i<A.SZ; i++ ) {
+			LL a=A[i]*m,b=B[i]-A[i]*x,d=__gcd( M[i],a );
+			if ( b%d )return MP( 0,-1 );
+			LL t=b/d*modInv( a/d,M[i]/d )%( M[i]/d );
+			x+=m*t;
+			m*=M[i]/d;
+			x%=m;
 		}
-		return MP (x % m, m);
+		return MP( ( ( x%m )+m )%m,m );
 	}
 
 **8 离散对数**
@@ -228,16 +229,14 @@
 			for(int i = 2; i < N; i++) {
 					if(!flag[i]) {
 							p[pn ++ ] = i;
-							mu[i] = -1;
+							mu[i] = -1;						//phi[i]=i-1;
 					}
 					for(int j = 0; j < pn && i * p[j] < N; j++) {
 							flag[i * p [j]] = true;
 							if(i % p[j] == 0) {
-									mu[i * p[j]] = 0;
+									mu[i * p[j]] = 0;		//phi[i * p[j]] = p[j] * phi[i];
 									break;
-							} else {
-									mu[i * p[j]] = -mu[i];
-							}
+							} else  mu[i * p[j]] = -mu[i];  //phi[i * p[j]] = (p[j] - 1) * phi[i];
 					}
 			}
 	}
