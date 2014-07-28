@@ -195,7 +195,7 @@
 
 
 **9 莫比乌斯**
->验题:未验
+>验题:zju_watashi(map) hdu1695
 
 	map<int,int> moebius (LL n) {
 		map<int,int> res;
