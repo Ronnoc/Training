@@ -23,7 +23,7 @@
 	//if m为质数 [费马小定理]a^(m-1)=1 mod m ==>a^(m-2)是a关于m的逆元
 
 **3 Millar素数测试 && rho大整数因数分解**
->验题: poj 2447
+>验题: poj 2447,2429,1811
 
 	const int S=7;
 	LL cs[]={2,325,9375,28178,450775,9780504,1795265022};
@@ -191,6 +191,22 @@
 			D=D*G%C;
 		}
 		return -1;
+	}
+	//x^K=A mod P(质数)::gcd(K,P-1)不大
+	if ( !A ) {printf( "1\n0\n" ); continue;}
+	int g=find_root( P );//原根
+	int b=extBSGS( g,A,P );
+	int f=P-1;
+	int e=__gcd( f,K );
+	if ( b%e ) {printf( "0\n" ); continue;}
+	b/=e,f/=e,K/=e;
+	LL x,y;
+	extGcd( f,K,x,y );
+	vector<LL>S;
+	y=( y*b%f+f )%f;
+	while ( e-- ) {
+		S.PB( powMod( g,y,P ) );
+		y=( y+f )%( P-1 );
 	}
 
 
