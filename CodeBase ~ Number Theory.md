@@ -191,7 +191,7 @@
 			D=D*G%C;
 		}
 		return -1;
-	}
+	}//验题 sgu261
 	//x^K=A mod P(质数)::gcd(K,P-1)不大
 	if ( !A ) {printf( "1\n0\n" ); continue;}
 	int g=find_root( P );//原根

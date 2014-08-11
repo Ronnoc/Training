@@ -1,11 +1,14 @@
-**1 point**
+**1 point及二维操作**
 
-	int sign( double x ) {return x < -eps ? -1 : x > eps;}
+	int sign( double x ) {return x<-eps?-1:x>eps;}
 	struct point {
 		double x, y;
 		point() {}
 		point( double _x, double _y ) : x( _x ), y( _y ) {}
-		point operator - ( const point &p ) const {return point( x - p.x, y - p.y );}//{-,*,/}
+		point operator - ( const point p ) const {return point( x - p.x, y - p.y );}//{-,*,/}
+		point operator + ( const point p ) const {return point( x+p.x,y+p.y );}
+		point operator * ( const double d )const {return point( x*d,y*d );}
+		point operator / ( const double d )const {return point( x/d,y/d );}
 		bool operator < ( const point &p ) const {
 			return sign( x - p.x ) == 0 ? sign( y - p.y ) <= 0 : sign( x - p.x ) <= 0;
 		}
@@ -20,8 +23,14 @@
 		double dis( point p ) {return ( *this - p ).len();}
 		double dis2( point p ) {p = p - ( *this ); return p*p;}//平方
 		void in() {scanf( "%lf%lf", &x, &y );}
-		void out() {printf( "%f %f\n",x,y );}
-	};
+		void out( char *s="" ) {printf( "(%f,%f)%s",x,y,s );}
+	} ORI( 0,0 );
+	bool isLL( point p1, point p2, point q1, point q2 ,point &is ) {
+		double m=( q2-q1 )^( p1-q1 ),n=( q2-q1 )^( p2-q1 );
+		if ( sign( n-m )==0 )return 0;
+		is= ( p1*n-p2*m )/( n-m );
+		return 1;
+	}
 
 **2 凸包及其直径**
 >验题:poj2187
@@ -58,51 +67,73 @@
 		return maxd;
 	}
 
-**3 半平面交**
->验题:poj2451
+**3 凸多边形**
+>半平面交验题:poj2451
 
 	struct line {
-		point u,v;//u->v的左边
-		double arc;
+		point s,e;
+		double k;
 		line() {}
-		line( point _u,point _v ):u( _u ),v( _v )
-		{arc=atan2( v.y-u.y,v.x-u.x );}
-		bool operator <( const line &L )const {return arc<L.arc;}
-	};
-	bool OnLeft( line l,point p ) {
-		return ( ( l.v-l.u )^( p-l.u ) )>0;
-	}
-	bool LLCross( point p1, point p2, point q1, point q2, point &is ) {
-		double m=( q2-q1 )^( p1-q1 ),n=( q2-q1 )^( p2-q1 );
-		if ( sign( n-m )==0 )return 0;
-		is=( p1*n-p2*m )/( n-m );
-		return 1;
-	}
-	int HalfsflCross( line *l,int n,point *poly ) {
-		sort( l,l+n );
-		int first,last;
-		point p[n];
-		line q[n];
-		q[first=last=0]=l[0];
-		for ( int i=1; i<n; i++ ) {
-			while ( first<last&&!OnLeft( l[i],p[last-1] ) )last--;
-			while ( first<last&&!OnLeft( l[i],p[first] ) )first++;
-			q[++last]=l[i];
-			if ( sign( ( q[last].v-q[last].u )^( q[last-1].v-q[last-1].u ) )==0 ) {
-				last--;
-				if ( OnLeft( q[last],l[i].u ) )
-					q[last]=l[i];
-			}
-			if ( first<last )
-				LLCross( q[last - 1].u, q[last - 1].v, q[last].u, q[last].v, p[last - 1] );
+		line( point _s,point _e ):s( _s ),e( _e )
+		{k = atan2( e.y - s.y,e.x - s.x );}
+		bool operator <( const line &L )const {
+			if ( sign( k-L.k ) )return k<L.k;
+			return ( ( s-L.s )^( L.e-L.s ) )<0;
 		}
-		while ( first<last&&!OnLeft( q[first],p[last-1] ) )last--;
-		if ( last-first<=1 )return 0;
-		LLCross( q[first].u,q[first].v,q[last].u,q[last].v,p[last] );
-		int m=0;
-		for ( int i=first; i<=last; i++ )
-			poly[m++]=p[i];
-		return m;
+		point operator &( const line &b )const {
+			point res = s;
+			double t = ( ( s - b.s )^( b.s - b.e ) )/( ( s - e )^( b.s - b.e ) );
+			res.x += ( e.x - s.x )*t;
+			res.y += ( e.y - s.y )*t;
+			return res;
+		}
+	};
+	int HPI( line *L, int n, point *R ) {
+		sort( L,L+n );
+		int tot = 1;
+		for ( int i = 1; i < n; i++ )
+			if ( sign( L[i].k - L[i-1].k )!=0 )
+				L[tot++] = L[i];
+		line Q[n];
+		int fi = 0, la = 1;
+		Q[0] = L[0],Q[1] = L[1];
+		for ( int i = 2; i < tot; i++ ) {
+			if ( sign( ( Q[la].e-Q[la].s )^( Q[la-1].e-Q[la-1].s ) ) ==0 ||
+					 sign( ( Q[fi].e-Q[fi].s )^( Q[fi+1].e-Q[fi+1].s ) ) ==0 )
+				return 0;
+			point s=L[i].s,e=L[i].e;
+			while ( fi<la && sign( ( ( Q[la]&Q[la-1] )-s )^( e-s ) )>0 )
+				la--;
+			while ( fi<la && sign( ( ( Q[fi]&Q[fi+1] )-s )^( e-s ) )>0 )
+				fi++;
+			Q[++la] = L[i];
+		}
+		while ( fi<la && sign( ( ( Q[la]&Q[la-1] )-Q[fi].s )^( Q[fi].e-Q[fi].s ) )>0 )
+			la--;
+		if ( la <= fi + 1 )return 0;
+		int ret = 0;
+		for ( int i = fi; i < la; i++ )R[ret++] = Q[i]&Q[i+1];
+		if ( fi < la - 1 )R[ret++] = Q[fi]&Q[la];
+		return ret;
+	}
+
+>凸多边形切割,逆时针 验题:hdu4904
+
+	vector<point> convexCut( const vector<point>&ps, point q1, point q2 ) {
+		vector<point> qs;
+		int n = ps.size();
+		for ( int i = 0; i < n; ++i ) {
+			point p1 = ps[i], p2 = ps[( i + 1 ) % n];
+			int d1 = sign( ( q2-q1 )^( p1-q1 ) ), d2 = sign( ( q2-q1 )^( p2-q1 ) );
+			if ( d1 >= 0 )
+				qs.PB( p1 );
+			if ( d1 * d2 < 0 ) {
+				point is;
+				int flag=isLL( p1, p2, q1, q2,is );
+				if ( flag )qs.PB( is );
+			}
+		}
+		return qs;
 	}
 
 **4 三维凸包**

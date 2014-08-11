@@ -16,6 +16,18 @@
 		}
 	}
 
+>验题:hdu4658
+
+	int get( int n,int k ) {	//no part is repeated k or more times.
+	LL ret=dp[n];
+	for ( int j=1,r=-1; n>=k*( 3*j*j-j )/2; j++,r*=-1 ) {
+		ret+=dp[n-k*( 3*j*j-j )/2]*r;
+		if ( n>=k*( 3*j*j+j )/2 )
+			ret+=dp[n-k*( 3*j*j+j )/2]*r;
+		ret=ret%MOD+MOD;
+	}
+	return ret%MOD;
+}
 
 **2 Polya 原理**
 >验题:未验
