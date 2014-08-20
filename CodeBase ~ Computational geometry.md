@@ -24,7 +24,7 @@
 		double dis2( point p ) {p = p - ( *this ); return p*p;}//平方
 		void in() {scanf( "%lf%lf", &x, &y );}
 		void out( char *s="" ) {printf( "(%f,%f)%s",x,y,s );}
-	} ORI( 0,0 );
+	} Orz( 0,0 );
 	bool isLL( point p1, point p2, point q1, point q2 ,point &is ) {
 		double m=( q2-q1 )^( p1-q1 ),n=( q2-q1 )^( p2-q1 );
 		if ( sign( n-m )==0 )return 0;
@@ -71,7 +71,7 @@
 >半平面交验题:poj2451
 
 	struct line {
-		point s,e;
+		point s,e; //s->e left
 		double k;
 		line() {}
 		line( point _s,point _e ):s( _s ),e( _e )
