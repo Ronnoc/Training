@@ -5,15 +5,15 @@
 		double x, y;
 		point() {}
 		point( double _x, double _y ) : x( _x ), y( _y ) {}
-		point operator - ( const point p ) const {return point( x - p.x, y - p.y );}//{-,*,/}
+		point operator - ( const point p ) const {return point( x - p.x, y - p.y );}
 		point operator + ( const point p ) const {return point( x+p.x,y+p.y );}
 		point operator * ( const double d )const {return point( x*d,y*d );}
 		point operator / ( const double d )const {return point( x/d,y/d );}
 		bool operator < ( const point &p ) const {
 			return sign( x - p.x ) == 0 ? sign( y - p.y ) <= 0 : sign( x - p.x ) <= 0;
 		}
-		double operator ^( const point &p )const {return x*p.y-y*p.x;} //叉积
-		double operator *( const point &p )const {return x*p.x+y*p.y;} //点积
+		double operator ^( const point &p )const {return x*p.y-y*p.x;}
+		double operator *( const point &p )const {return x*p.x+y*p.y;}
 		double len() {return sqrt( x*x+y*y );}
 		double arc() {return atan2( y, x );}
 		point normal() {return ( *this ) / this->len();}
