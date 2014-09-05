@@ -96,7 +96,7 @@
 	}
 
 **4 FFT**
->验题:未验
+>验题:NEERC 2013 Eastern subregional G
 
 	int revv (int x,int mask) {
 		int ret=0;
