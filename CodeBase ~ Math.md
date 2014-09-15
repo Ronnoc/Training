@@ -160,37 +160,76 @@
 	}
 
 **5 单纯形**
->验题:未验
+>验题: hdu2979
 
-	#define rep(i,l,n) for(int i = l; i <= n; i++)
-	const int MAXR = 300, MAXC = 500, inf = ( ~0U )>>2;
-	int n, m, a[MAXR][MAXC], next[MAXC], s, t, c;
-	inline void orz( int l, int e ) {
-		a[l][e] = -1;
-		t = MAXC - 1;
-		rep( i,0,m ) if ( a[l][i] ) next[t] = i, t = i;
-		next[t] = -1;
-		rep( i,0,n ) if ( i != l && ( t = a[i][e] ) ) {
-			a[i][e] = 0;
-			for ( int j = next[MAXC - 1]; j != -1; j = next[j] ) a[i][j] += a[l][j] * t;
+	const int MVar = 444, MEqa = 444;
+	long double a[MEqa][MVar];
+	int idx[MVar],nv,ne;
+	int nxt[MVar];//-a[0][0]=max ∑a[0][i]*x[i]
+	void show() {
+		int i,j;
+		for ( i=0; i<=ne; i++ ) {
+			printf( "%d[%d]%3.5lf=\t",i,idx[i],a[i][0] );
+			for ( j=1; j<=nv; j++ )if(abs(a[i][j])>eps)printf( "%3.5lf*x[%d] ",a[i][j],j );
+			printf( "\n" );
+		}
+		printf( "\n" );
+	}
+	void pivot( int e,int v ) {
+		int i,j;
+		long double temp;
+		int tp=MVar-1;
+		for ( j=nv; j>=0; j-- )nxt[j]=-1;
+		for ( j=nv; j>=0; j-- )if ( abs( a[e][j] )>eps ) {nxt[tp]=j; tp=j;}
+		temp=a[e][v];
+		for ( tp=nxt[MVar-1]; tp!=-1; tp=nxt[tp] )a[e][tp]/=temp;
+		for ( i=0; i<=ne; i++ )if ( abs( a[i][v] )>eps&&i!=e ) {
+				temp=a[i][v];
+				for ( tp=nxt[MVar-1]; tp!=-1; tp=nxt[tp] )
+					a[i][tp]-=temp*a[e][tp];
+			}
+		idx[e]=v;
+	}
+	int dualsolve() {
+		int i,j;
+		long double temp;
+		for ( j=1; j<=nv; j++ )if ( a[0][j]<-eps )return 0;
+		while ( 1 ) {
+			int l=0,r=0;
+			temp=-eps;
+			for ( i=1; i<=ne; i++ )if ( a[i][0]<temp )temp=a[i][0],r=i;
+			if ( !r )return 1;
+			temp=1e100;
+			for ( j=1; j<=nv; j++ )if ( a[r][j]<-eps&&a[0][j]/a[r][j]<temp )
+					temp=a[0][j]/a[r][j],l=j;
+			if ( !l )return 0;
+			pivot( r,l );
 		}
 	}
-	int solve( void ) {
-		for ( ;; ) {
-			int min = inf, l = 0, e = 0;
-			rep( i,1,m ) if ( a[0][i] > 0 ) {e = i; break;}
-			if ( !e ) return a[0][0];
-			rep( i,1,n ) if ( a[i][e] < 0 && a[i][0] < min ) min = a[i][0], l = i;
-			orz( l,e );
+	int solve() {
+		int i,j;
+		long double temp;
+		for ( i=1; i<=ne; i++ )if ( abs( a[0][idx[i]] )>eps ) {
+				temp=a[0][idx[i]];
+				for ( j=0; j<=nv; j++ )a[0][j]-=temp*a[i][j];
+			}
+		int dual=0;
+		for ( i=1; i<=ne; i++ )if ( a[i][0]<-eps )dual=1;
+		if ( dual ) {
+			int dual=dualsolve();
+			if ( !dual )return 0;	//no solution
+		}
+		while ( 1 ) {
+			int l=0,r=0;
+			temp=1e100;
+			for ( j=1; j<=nv; j++ )if ( a[0][j]>eps ) {l=j; break;}
+			if ( !l )return 1;		//done
+			for ( i=1; i<=ne; i++ )if ( a[i][l]>eps&&a[i][0]+eps<a[i][l]*temp )
+					temp=a[i][0]/a[i][l],r=i;
+			if ( !r )return -1;		//infinite
+			pivot( r,l );
 		}
 	}
-	/*scanf( "%d%d", &m, &n );						//m个方程,n个变量
-		rep( j,1,m ) scanf( "%d", &a[0][j] );		//第j个方程左端 隐含标准化变元
-		rep( i,1,n ) {
-			scanf( "%d%d%d", &s, &t, &c );
-			rep( j,s,t ) a[i][j] = -1; 				//a[0][j]+sigma{a[i][j]*x[i]}<=0;
-			a[i][0] = c;							//最小化z中的x[i]系数
-		}*/
 
 			
 **6 阶乘最后非零位**
