@@ -1,48 +1,68 @@
 **1 JAVA I/O**
 >based on Petr's template
 
-	public class Main implements Runnable {
-		public static void main( String[] args ) {
+	import java.io.BufferedReader;
+	import java.io.IOException;
+	import java.io.InputStreamReader;
+	import java.io.PrintWriter;
+	import java.math.BigInteger;
+	import java.util.StringTokenizer;
+	
+	public class Main {
+		
+		public void Solve() throws IOException {
+		}
+		
+		public static void main(String[] args) throws IOException {
 			new Main().run();
 		}
-		BufferedReader reader;
-		StringTokenizer tokenizer;
-		PrintWriter writer;
+		
+		BufferedReader	reader;
+		StringTokenizer	tokenizer;
+		PrintWriter			writer;
+		
 		public void run() {
 			try {
-				reader = new BufferedReader( new InputStreamReader( System.in ) );
+				reader = new BufferedReader(new InputStreamReader(System.in));
+				writer = new PrintWriter(System.out);
+				// reader = new BufferedReader(new InputStreamReader(new
+				// FileInputStream("journey.in")));
+				// writer = new PrintWriter(new FileOutputStream("journey.out"));
 				tokenizer = null;
-				writer = new PrintWriter( System.out );
-				solve();
+				while (hasNext())
+					Solve();
 				reader.close();
 				writer.flush();
 				writer.close();
-			} catch ( Exception e ) {
+			} catch (Exception e) {
 				e.printStackTrace();
-				System.exit( 1 );
+				System.exit(1);
 			}
 		}
 		
 		boolean hasNext() throws IOException {
-			while ( tokenizer == null || !tokenizer.hasMoreTokens() ) {
+			while (tokenizer == null || !tokenizer.hasMoreTokens()) {
 				String nextLine = reader.readLine();
-				if ( nextLine == null )
-					return false;
-				tokenizer = new StringTokenizer( nextLine );
+				if (nextLine == null) return false;
+				tokenizer = new StringTokenizer(nextLine);
 			}
 			return true;
 		}
 		
 		int nextInt() throws IOException {
-			return Integer.parseInt( nextToken() );
+			return Integer.parseInt(nextToken());
 		}
 		
 		long nextLong() throws IOException {
-			return Long.parseLong( nextToken() );
+			return Long.parseLong(nextToken());
 		}
 		
 		double nextDouble() throws IOException {
-			return Double.parseDouble( nextToken() );
+			return Double.parseDouble(nextToken());
+		}
+		
+		BigInteger nextBigInteger() throws IOException {
+			return new BigInteger(nextToken());
 		}
 		
 		String nextLine() throws IOException {
@@ -50,19 +70,13 @@
 		}
 		
 		String nextToken() throws IOException {
-			while ( tokenizer == null || !tokenizer.hasMoreTokens() ) {
-				tokenizer = new StringTokenizer( reader.readLine() );
+			while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+				tokenizer = new StringTokenizer(reader.readLine());
 			}
 			return tokenizer.nextToken();
 		}
-		
-		BigInteger nextBigInteger() throws IOException {
-			while ( tokenizer == null || !tokenizer.hasMoreTokens() ) {
-				tokenizer = new StringTokenizer( reader.readLine() );
-			}
-			return new BigInteger( tokenizer.nextToken() );
-		}
 	}
+
 
 **2 栈空间**
 
