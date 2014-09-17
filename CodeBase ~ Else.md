@@ -26,8 +26,8 @@
 				reader = new BufferedReader(new InputStreamReader(System.in));
 				writer = new PrintWriter(System.out);
 				// reader = new BufferedReader(new InputStreamReader(new
-				// FileInputStream("journey.in")));
-				// writer = new PrintWriter(new FileOutputStream("journey.out"));
+				// FileInputStream(".in")));
+				// writer = new PrintWriter(new FileOutputStream(".out"));
 				tokenizer = null;
 				while (hasNext())
 					Solve();
@@ -70,9 +70,8 @@
 		}
 		
 		String nextToken() throws IOException {
-			while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+			while (tokenizer == null || !tokenizer.hasMoreTokens())
 				tokenizer = new StringTokenizer(reader.readLine());
-			}
 			return tokenizer.nextToken();
 		}
 	}
