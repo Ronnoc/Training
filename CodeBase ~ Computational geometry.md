@@ -3,17 +3,16 @@
 	int sign( double x ) {return x<-eps?-1:x>eps;}
 	struct point {
 		double x, y;
-		point() {}
-		point( double _x, double _y ) : x( _x ), y( _y ) {}
-		point operator - ( const point p ) const {return point( x - p.x, y - p.y );}
-		point operator + ( const point p ) const {return point( x+p.x,y+p.y );}
-		point operator * ( const double d )const {return point( x*d,y*d );}
-		point operator / ( const double d )const {return point( x/d,y/d );}
+		point( double _x=0, double _y=0 ) : x( _x ), y( _y ) {}
+		point operator - ( point p ) {return point( x-p.x,y-p.y );}
+		point operator + ( point p ) {return point( x+p.x,y+p.y );}
+		point operator * ( double d ) {return point( x*d,y*d );}
+		point operator / ( double d ) {return point( x/d,y/d );}
 		bool operator < ( const point &p ) const {
 			return sign( x - p.x ) == 0 ? sign( y - p.y ) <= 0 : sign( x - p.x ) <= 0;
 		}
-		double operator ^( const point &p )const {return x*p.y-y*p.x;}
-		double operator *( const point &p )const {return x*p.x+y*p.y;}
+		double operator ^( point p ) {return x*p.y-y*p.x;}
+		double operator *( point p ) {return x*p.x+y*p.y;}
 		double len() {return sqrt( x*x+y*y );}
 		double arc() {return atan2( y, x );}
 		point normal() {return ( *this ) / this->len();}
@@ -141,20 +140,22 @@
 
 	struct spt {
 		double x,y,z;
-		spt() {}
-		spt( double _x,double _y,double _z ):x( _x ),y( _y ),z(_z) {}
-		spt operator +( const spt &s )const {return spt( x+s.x,y+s.y,z+s.z );} //{-,*,/}
-		double len()const {return sqrt( SQ( x )+SQ( y )+SQ(z) );}
-		double operator *( const spt &s )const {return x*s.x+y*s.y+z*s.z;} //点积
-		spt operator ^( const spt &s )const {	//叉积
+		spt( double _x=0,double _y=0,double _z=0 ):x( _x ),y( _y ),z(_z) {}
+		spt operator +( spt &s ) {return spt( x+s.x,y+s.y,z+s.z );}
+		spt operator -( spt &s ) {return spt( x-s.x,y-s.y,z-s.z );}
+		spt operator *(double d) {return spt(x*d,y*d,z*d);}
+		spt operator /(double d) {return spt(x/d,y/d,z/d);}
+		double len()const {return sqrt( SQ(x)+SQ(y)+SQ(z) );}
+		double operator *( spt s ) {return x*s.x+y*s.y+z*s.z;} //点积
+		spt operator ^( spt s ) {	//叉积
 			spt ret;
 			ret.x=y*s.z-z*s.y;
 			ret.y=z*s.x-x*s.z;
 			ret.z=x*s.y-y*s.x;
 			return ret;
 		}
-		void output() {printf( "%.6f %.6f %.6f\n",x,y,z );}
-	} ORI( 0,0,0 );
+		void output() {printf( "(%.6f %.6f %.6f)\n",x,y,z );}
+	} Orz( 0,0,0 );
 	struct sfl{
 		spt u,v,w;
 		sfl() {}
@@ -211,7 +212,7 @@
 			if ( h<r&&B<PI/2 )S-=( acos( h/r )*r*r-h*sqrt( r*r-h*h ) );
 		} else if ( b>r ) {
 			theta=PI-B-asin( sin( B )/r*a );
-			S=.5*a*r*sin( theta )+( C-theta )/2*r*r;
+			S=.5*a*r*sin( theta )+( C-theta )*.5*r*r;
 		} else S=.5*sin( C )*a*b;
 		return S;
 	}
@@ -303,22 +304,22 @@
 
 	const int MAXN = int ( 1e5 + 10 );
 	double closed;
-	struct Point {
+	struct point {
 		double x, y;
 		int id;
 	};
-	Point pts[MAXN],lP[MAXN],rP[MAXN];
+	point pts[MAXN],lP[MAXN],rP[MAXN];
 	struct cmpY {
-		bool operator()( const Point &lhs, const Point &rhs ) {
+		bool operator()( const point &lhs, const point &rhs ) {
 			return lhs.y < rhs.y;
 		}
 	};
 	struct cmpX {
-		bool operator()( const Point &lhs, const Point &rhs ) {
+		bool operator()( const point &lhs, const point &rhs ) {
 			return lhs.x < rhs.x;
 		}
 	};
-	double dist( const Point &pt1, const Point &pt2 ) {
+	double dist( const point &pt1, const point &pt2 ) {
 		return sqrt( SQ( pt1.x - pt2.x ) + SQ( pt1.y - pt2.y ) );
 	}
 	void findNearest( int l, int r ) {

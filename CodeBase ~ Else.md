@@ -17,16 +17,15 @@
 			new Main().run();
 		}
 		
-		BufferedReader	reader;
-		StringTokenizer	tokenizer;
+		BufferedReader		reader;
+		StringTokenizer		tokenizer;
 		PrintWriter			writer;
 		
 		public void run() {
 			try {
 				reader = new BufferedReader(new InputStreamReader(System.in));
 				writer = new PrintWriter(System.out);
-				// reader = new BufferedReader(new InputStreamReader(new
-				// FileInputStream(".in")));
+				// reader = new BufferedReader(new InputStreamReader(new FileInputStream(".in")));
 				// writer = new PrintWriter(new FileOutputStream(".out"));
 				tokenizer = null;
 				while (hasNext())
@@ -79,7 +78,7 @@
 
 **2 栈空间**
 
-	#pragma comment(linker, "/STACK:1024000000,1024000000")
-    int size = 256<<20;	//256MB
+	#pragma comment(linker, "/STACK:1024000000,1024000000")		//C++
+    int size = 256<<20;	//256MB Linix G++
     char *p = (char*)malloc(size) + size;
     __asm__("movl %0, %%esp\n" :: "r"(p) );

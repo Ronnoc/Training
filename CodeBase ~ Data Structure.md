@@ -4,10 +4,10 @@
 	const int N = 100000+10;
 	int K,iCmp,nTid;
 	typedef vector<int> Obj;
-	void show( Obj o ) {
-		printf( "%d",o[0] );
-		for ( int i=1; i<K; i++ )printf( " %d",o[i] );
-		printf( "\n" );
+	void show( Obj &o ) {
+		printf( "(%d",o[0] );
+		for ( int i=1; i<K; i++ )printf( ",%d",o[i] );
+		printf( ")\n" );
 	}
 	struct Filter {
 		Obj L,R;
@@ -95,8 +95,7 @@
 	const int MXN = 10000 + 10;
 	struct SEG {
 		int l,r,m,lazy;
-		SEG() {}
-		SEG( int _l,int _r ) {l=_l,r=_r;}
+		SEG( int _l=0,int _r=0 ) {l=_l,r=_r;}
 	} SGT[MXN<<2];
 	void create( SEG &T,int t ) {
 		T.m=0;
