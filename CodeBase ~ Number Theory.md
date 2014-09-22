@@ -257,7 +257,7 @@
 			}
 	}
 
-**10 线性递推取模最小值 **
+**10 线性递推取模最小值**
 >验题 : hdu5022
 
 	LL getmin(LL start,LL slope,LL cnt,LL mod) {	//min{ (start+k*slope)%mod | 0<=k<=cnt }
@@ -273,3 +273,17 @@
 		return min(res,getmin(start,ns,ncnt,slope));
 	}
 
+
+**11 求解x^2=a mod P**
+>验题:ural 1132
+
+	/*
+		call(b,0,a,(p+1)/2,p) return a sol of {x^2=a (mod p)}
+		(p is odd prime)&&(there exist a sol{a^[(p-1)/2]=1 mod p})&&(b^( (p-1)/2 )==-1 mod p)
+	 */
+	LL call(LL b,LL c,LL a,LL x,LL p){
+		if(x%2==0)return modPow(b,c/2,p)*modPow(a,x/2,p)%p;
+		LL tp=modPow(b,c/2,p)*modPow(a,(x-1)/2,p)%p;
+		if(tp==1)return call(b,c/2,a,(x+1)/2,p);
+		return call(b,(c+p-1)/2,a,(x+1)/2,p);
+	}
