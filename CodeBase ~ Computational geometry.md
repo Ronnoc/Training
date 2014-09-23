@@ -1,4 +1,4 @@
-**1 point及二维操作**
+**1 二维操作**
 
 	int sign( double x ) {return x<-eps?-1:x>eps;}
 	struct point {
@@ -20,7 +20,7 @@
 		point rotate( double arc )
 		{return point( x*cos( arc ) - y*sin( arc ),x*sin( arc ) + y*cos( arc ) );}
 		double dis( point p ) {return ( *this - p ).len();}
-		double dis2( point p ) {p = p - ( *this ); return p*p;}//平方
+		double dis2( point p ) {p = p - ( *this ); return p*p;}
 		void in() {scanf( "%lf%lf", &x, &y );}
 		void out( char *s="" ) {printf( "(%f,%f)%s",x,y,s );}
 	} Orz( 0,0 );
@@ -31,7 +31,68 @@
 		return 1;
 	}
 
-**2 凸包及其直径**
+**2 三维操作**
+
+	struct spt {
+		double x,y,z;
+		spt( double _x=0,double _y=0,double _z=0 ):x( _x ),y( _y ),z(_z) {}
+		spt operator +( spt &s ) {return spt( x+s.x,y+s.y,z+s.z );}
+		spt operator -( spt &s ) {return spt( x-s.x,y-s.y,z-s.z );}
+		spt operator *(double d) {return spt(x*d,y*d,z*d);}
+		spt operator /(double d) {return spt(x/d,y/d,z/d);}
+		double len()const {return sqrt( SQ(x)+SQ(y)+SQ(z) );}
+		double operator *( spt s ) {return x*s.x+y*s.y+z*s.z;} //点积
+		spt operator ^( spt s ) {	//叉积
+			spt ret;
+			ret.x=y*s.z-z*s.y;
+			ret.y=z*s.x-x*s.z;
+			ret.z=x*s.y-y*s.x;
+			return ret;
+		}
+		bool operator < (const spt &s)const {
+			if(sign(s.x-x)!=0)return sign(x-s.x)<0;
+			if(sign(s.y-y)!=0)return sign(y-s.y)<0;
+			return sign(z-s.z)<0;
+		}
+		bool operator ==(const spt &s)const {
+			return sign(s.x-x)==0&&sign(s.y-y)==0&&sign(s.z-z)==0;
+		}
+		void output() {printf( "(%.6f %.6f %.6f)\n",x,y,z );}
+	} Orz( 0,0,0 );
+	struct sfl {
+		spt p,o;
+		sfl() {}
+		sfl( spt _p,spt _o ):p( _p ),o( _o ) {}
+		sfl( spt u,spt v,spt w ) {p=u,o=( ( v-u )^( w-u ) ).normal();}
+	};
+	double disLP( spt p1,spt p2,spt q ) {
+		return fabs( ( ( p2-p1 )^( q-p1 ) ).len()/( ( p2-p1 ).len() ) );
+	}
+	double disLL( spt p1,spt p2,spt q1,spt q2 ) {
+		spt p=q1-p1,u=p2-p1,v=q2-q1;
+		double d=( u*u )*( v*v )-SQ( u*v );
+		if ( sign( d )==0 )return disLP( q1,q2,p1 );
+		double s=( ( p*u )*( v*v )-( p*v )*( u*v ) )/d;
+		return disLP( q1,q2,p1+u*s );
+	}
+	bool isFL( sfl f,spt q1,spt q2,spt &is ) {
+		double a=f.o*( q2-f.p ),b=f.o*( q1-f.p );
+		double d=a-b;
+		if ( sign( d )==0 )return 0;
+		is=( q1*a-q2*b )/d;
+		return 1;
+	}
+	bool isFF( sfl a,sfl b,spt &is1,spt &is2 ) {
+		spt e=a.o^b.o;
+		spt v=a.o^e;
+		double d=b.o*v;
+		if ( sign( d )==0 )return 0;
+		is1=a.p+v*( b.o*( b.p-a.p ) )/d;
+		is2=is1+e;
+		return 1;
+	}
+
+**3 凸包及其直径**
 >验题:poj2187
 
 	vector<point> ConvexHull( vector<point> p ) {
@@ -66,7 +127,7 @@
 		return maxd;
 	}
 
-**3 凸多边形**
+**4 凸多边形**
 >半平面交验题:poj2451
 
 	struct line {
@@ -135,66 +196,72 @@
 		return qs;
 	}
 
-**4 三维凸包**
->验题:poj3528
+**5 三维凸包**
+>验题:poj3528,hdu4449
 
-	struct spt {
-		double x,y,z;
-		spt( double _x=0,double _y=0,double _z=0 ):x( _x ),y( _y ),z(_z) {}
-		spt operator +( spt &s ) {return spt( x+s.x,y+s.y,z+s.z );}
-		spt operator -( spt &s ) {return spt( x-s.x,y-s.y,z-s.z );}
-		spt operator *(double d) {return spt(x*d,y*d,z*d);}
-		spt operator /(double d) {return spt(x/d,y/d,z/d);}
-		double len()const {return sqrt( SQ(x)+SQ(y)+SQ(z) );}
-		double operator *( spt s ) {return x*s.x+y*s.y+z*s.z;} //点积
-		spt operator ^( spt s ) {	//叉积
-			spt ret;
-			ret.x=y*s.z-z*s.y;
-			ret.y=z*s.x-x*s.z;
-			ret.z=x*s.y-y*s.x;
-			return ret;
+	const int MXN = 55;
+	spt s[MXN];
+	int mark[MXN][MXN];
+	int cnt,n;
+	struct Face {
+		int a,b,c;
+		Face(int a=0,int b=0,int c=0):a(a),b(b),c(c) {}
+		int &operator [](int k) {
+			if(!k)return a;
+			return k==1?b:c;
 		}
-		void output() {printf( "(%.6f %.6f %.6f)\n",x,y,z );}
-	} Orz( 0,0,0 );
-	struct sfl{
-		spt u,v,w;
-		sfl() {}
-		sfl(spt _u,spt _v,spt _w):u(_u),v(_v),w(_w) {}
 	};
-	int SpaceConvexHull(spt *s,int n,sfl *p){
-		int vs[MXN][MXN];
-		vector<vector<int> >crt;
-		vector<vector<int> >::iterator it;
-		vector<int>L;
-		L.clear();L.PB(0);L.PB(1);L.PB(2);crt.PB(L);
-		L.clear();L.PB(2);L.PB(1);L.PB(0);crt.PB(L);
-		for(int i=3;i<n;i++){
-			vector<vector<int> >next;
-			for(it=crt.OP;it!=crt.ED;++it){
-				vector<int>t=*it;
-				int v=((s[t[1]]-s[t[0]])^(s[t[2]]-s[t[0]]))*(s[i]-s[t[0]])<0?-1:1;
-				if(v<0)next.PB(t);
-				for(int j=0;j<3;j++){
-					int x=t[j],y=t[(j+1)%3];
-					if(vs[y][x]==0)vs[x][y]=v;
-					else {
-						if(vs[y][x]!=v){
-							if(v>0){L.clear();L.PB(x);L.PB(y);L.PB(i);next.PB(L);}
-							else {L.clear();L.PB(y);L.PB(x);L.PB(i);next.PB(L);}
-						}
-						vs[y][x]=0;
-					}
-				}
-			}
-			crt=next;
+	vector<Face>face;
+	void insert(int a,int b,int c) {face.PB(Face(a,b,c));}
+	double mix(spt a,spt b,spt c) {return a*(b^c);}
+	double volume(int a,int b,int c,int d) {return mix(s[b]-s[a],s[c]-s[a],s[d]-s[a]);}
+	void add(int v) {
+		vector<Face>tmp;
+		int a,b,c;
+		cnt++;
+		for(int i=0; i<face.SZ; i++) {
+			a=face[i][0],b=face[i][1],c=face[i][2];
+			if(sign(volume(v,a,b,c))<0)
+				mark[a][b]=mark[b][a]=mark[b][c]=mark[c][b]=mark[c][a]=mark[a][c]=cnt;
+			else tmp.PB(face[i]);
 		}
-		int m=0;
-		for(int i=0;i<crt.SZ;i++)
-			p[m++]=sfl(s[crt[i][0]],s[crt[i][1]],s[crt[i][2]]);
-		return m;
+		face=tmp;
+		for(int i=0; i<tmp.SZ; i++) {
+			a=face[i][0],b=face[i][1],c=face[i][2];
+			if(mark[a][b]==cnt)insert(b,a,v);
+			if(mark[b][c]==cnt)insert(c,b,v);
+			if(mark[c][a]==cnt)insert(a,c,v);
+		}
+	}
+	int Find() {
+		for(int i=2; i<n; i++) {
+			spt ndir=(s[0]-s[i])^(s[1]-s[i]);
+			if(ndir==spt())continue;
+			swap(s[i],s[2]);
+			for(int j=i+1; j<n; j++)
+				if(sign(volume(0,1,2,j))!=0) {
+					swap(s[j],s[3]);
+					insert(0,1,2);
+					insert(0,2,1);
+					return 1;
+				}
+		}
+		return 0;
+	}
+	bool makeFace() {
+		sort(s,s+n);
+		n=unique(s,s+n)-s;
+		random_shuffle(s,s+n);
+		face.clear();
+		int flag=Find();
+		if(!flag);//on same plane
+		memset(mark,0,sizeof mark);
+		cnt=0;
+		for(int i=3; i<n; i++)add(i);
+		return 1;
 	}
 
-**4 多边形与一个圆面积交**
+**6 多边形与一个圆面积交**
 >验题:poj3675
 
 	double area2( point pa,point pb ) {
@@ -223,7 +290,7 @@
 		return fabs( S );
 	}
 
-**5 最小圆覆盖**
+**7 最小圆覆盖**
 >验题:hdu3007
 
 	struct circle {
@@ -263,43 +330,8 @@
 			}
 		return ans;
 	}
-	
-**6 三维操作**
 
-	struct sfl {
-		spt p,o;
-		sfl() {}
-		sfl( spt _p,spt _o ):p( _p ),o( _o ) {}
-		sfl( spt u,spt v,spt w ) {p=u,o=( ( v-u )^( w-u ) ).normal();}
-	};
-	double disLP( spt p1,spt p2,spt q ) {
-		return fabs( ( ( p2-p1 )^( q-p1 ) ).len()/( ( p2-p1 ).len() ) );
-	}
-	double disLL( spt p1,spt p2,spt q1,spt q2 ) {
-		spt p=q1-p1,u=p2-p1,v=q2-q1;
-		double d=( u*u )*( v*v )-SQ( u*v );
-		if ( sign( d )==0 )return disLP( q1,q2,p1 );
-		double s=( ( p*u )*( v*v )-( p*v )*( u*v ) )/d;
-		return disLP( q1,q2,p1+u*s );
-	}
-	bool isFL( sfl f,spt q1,spt q2,spt &is ) {
-		double a=f.o*( q2-f.p ),b=f.o*( q1-f.p );
-		double d=a-b;
-		if ( sign( d )==0 )return 0;
-		is=( q1*a-q2*b )/d;
-		return 1;
-	}
-	bool isFF( sfl a,sfl b,spt &is1,spt &is2 ) {
-		spt e=a.o^b.o;
-		spt v=a.o^e;
-		double d=b.o*v;
-		if ( sign( d )==0 )return 0;
-		is1=a.p+v*( b.o*( b.p-a.p ) )/d;
-		is2=is1+e;
-		return 1;
-	}
-
-**7 平面最近点对**
+**8 平面最近点对**
 > 验题:zoj 2107
 
 	const int MAXN = int ( 1e5 + 10 );

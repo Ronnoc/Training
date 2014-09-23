@@ -45,10 +45,10 @@
 		G->update();
 		return G;
 	}
-	void queryF( Node *p,const Filter &f ) {
+	void queryF( Node *p,const Filter &f ) {   //可以传总filter然后边传变算极限边界
 		if ( !p )return;                       //空树
-		if ( f.ok( p->u ) ){}                  //结点可行
 		int x=p->u[p->c];
+		if ( f.ok( p->u ) ){}                  //结点
 		if ( x>=f.L[p->c] )queryF( p->ls,f );  //左子树
 		if ( x<=f.R[p->c] )queryF( p->rs,f );  //右子树
 	}

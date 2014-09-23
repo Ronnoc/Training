@@ -14,7 +14,6 @@
 **2 逆元**
 >验题: poj2447
 
-	//适用于m不是质数 gcd(a,m)==1时有逆元
 	LL modInv (LL a, LL m) {
 		LL x, y;
 		extGcd(a,m,x,y);
@@ -96,7 +95,7 @@
 	}
 
 
-**4 阶乘||组合数 取模**
+**4 组合数 取模**
 >验题:浙大shi哥译书
 
 	int fact[MAX_P];	//预处理n! mod p 的表 O(n)
@@ -134,14 +133,7 @@
 		if (n != 1) res = res / n * (n - 1);
 		return res;
 	}
-	int euler[MAX_N];
-	void tableEuler (int n) {
-		for (int i = 0; i < n; i++)
-			euler[i] = i;
-		for (int i = 2; i < n; i++)
-			if (euler[i] == i)
-				for (int j = i; j < n; j += i) euler[j] = euler[j] / i * (i - 1);
-	}
+	//筛法见mobius
 
 **7 模同余方程组**
 >验题:poj2891
@@ -162,13 +154,12 @@
 	}
 
 **8 离散对数**
->验题:poj3243,hdu2815
+>验题:poj3243,hdu2815,hdu5022
 
 	int extBSGS( int A,int B,int C ) { //A^x==B mod C
 		for ( int i=0,tmp=1%C; i<100; i++,tmp=1LL*tmp*A%C )if ( tmp==B )return i;
-		int temp;
+		int temp,d=0;
 		LL D=1%C;
-		int d=0;
 		while ( ( temp=__gcd( A,C ) )!=1 ) {
 			if ( B%temp )return -1;
 			C/=temp,B/=temp;
@@ -191,7 +182,7 @@
 			D=D*G%C;
 		}
 		return -1;
-	}//验题 sgu261 :: 
+	}
 	//x^K=A mod P(质数)::gcd(K,P-1)不大
 	if ( !A ) {printf( "1\n0\n" ); continue;}
 	int g=find_root( P );//原根
@@ -277,10 +268,8 @@
 **11 求解x^2=a mod P**
 >验题:ural 1132
 
-	/*
-		call(b,0,a,(p+1)/2,p) return a sol of {x^2=a (mod p)}
-		(p is odd prime)&&(there exist a sol{a^[(p-1)/2]=1 mod p})&&(b^( (p-1)/2 )==-1 mod p)
-	 */
+	//call(b,0,a,(p+1)/2,p) return a sol of {x^2=a (mod p)}
+	//(p is odd prime)&&(there exist a sol{a^[(p-1)/2]=1 mod p})&&(b^( (p-1)/2 )==-1 mod p)
 	LL call(LL b,LL c,LL a,LL x,LL p){
 		if(x%2==0)return modPow(b,c/2,p)*modPow(a,x/2,p)%p;
 		LL tp=modPow(b,c/2,p)*modPow(a,(x-1)/2,p)%p;
