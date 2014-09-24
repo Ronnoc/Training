@@ -123,7 +123,7 @@
 **5 欧拉函数**
 >验题: poj 1284
 
-	int eulerPhi (int n) {
+	int eulerPhi (int n) {			// test: phi(846720)=193536 
 		int res = n;
 		for (int i = 2; i * i <= n; i++)		//可用质数加速
 			if (n % i == 0) {

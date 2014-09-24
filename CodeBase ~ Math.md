@@ -30,7 +30,7 @@
 	}
 
 **2 Polya 原理**
->验题:未验
+>验题:poj1286
 
 	//perm[0..n-1]为0..n-1的一个置换(排列)
 	//返回置换最小周期,num返回循环节个数
@@ -312,4 +312,36 @@
 	}
 	long double asr(long double a,long double b,long double eps) {
 		return asr(a,b,eps,simpson(a,b));
+	}
+
+**8 无标号树计数**
+>来自yh_victor的板子
+
+	void extended_gcd(int a,int b,int c,int &x,int &y) {
+		if(b==0)x=c/a,y=0;
+		else {
+			extended_gcd(b,a%b,c,y,x);
+			y-=a/b*x;
+		}
+	}
+	int solve(int k,int n,int p) {//无标号树计数
+		int a[55],s[55][55],tmp,foo;
+		a[1]=1;
+		for(int j=1; j<n; j++) {
+			a[j+1]=0;
+			for(int i=1; i<=j; i++) {
+				if(j-i<i) s[j][i]=a[j+1-i];
+				else s[j][i]=(s[j-i][i]+a[j+1-i])%p;
+				a[j+1]+=s[j][i]*i%p*a[i]%p;
+			}
+			foo=a[j+1]%p;
+			extended_gcd(j,p,foo,a[j+1],tmp);
+			if(a[j+1]>=0) a[j+1]%=p;
+			else a[j+1]=p-(-a[j+1])%p;
+		}
+		if(k==1) {		//if无根树
+			for(int i=1; i<=n/2; i++)a[n]=(a[n]+p-a[i]*a[n-i]%p)%p;
+			if((n&1)==0) a[n]+=a[n/2]*(a[n/2]+1)/2;
+		}
+		return a[n]%p;
 	}
