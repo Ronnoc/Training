@@ -144,29 +144,33 @@
 **4 FFT**
 >验题:NEERC 2013 Eastern subregional G
 
-	int revv (int x,int mask) {
+	const int MXN = 1<<20;
+	double ax[MXN],ay[MXN];
+	double bx[MXN],by[MXN];
+	double ansx[MXN],ansy[MXN];
+	int revv(int x,int mask) {
 		int ret=0;
-		for (int i=0; i<mask; i++) {
+		for(int i=0; i<mask; i++) {
 			ret<<=1;
 			ret|=x&1;
 			x>>=1;
 		}
 		return ret;
 	}
-	void fft (double * rl, double * ig, int n, bool sign) {
+	void fft(double * rl, double * ig, int n, bool sign) {
 		int d=0;
-		while ( (1<<d) <n) ++d;
-		for (int i=0; i<n; i++) {
-			int j=revv (i,d);
-			if (i<j) swap (rl[i],rl[j]),swap (ig[i],ig[j]);
+		while((1<<d) <n) ++d;
+		for(int i=0; i<n; i++) {
+			int j=revv(i,d);
+			if(i<j) swap(rl[i],rl[j]),swap(ig[i],ig[j]);
 		}
-		for (int m=2; m<=n; m<<=1) {
+		for(int m=2; m<=n; m<<=1) {
 			int mh=m>>1;
-			double _wr=cos (2*PI/m),_wi=sin (2*PI/m);
-			if (sign) _wi*=-1.0;
-			for (int i=0; i<n; i+=m) {
+			double _wr=cos(2*PI/m),_wi=sin(2*PI/m);
+			if(sign) _wi*=-1.0;
+			for(int i=0; i<n; i+=m) {
 				double wr=1,wi=0;
-				for (int j=i; j<mh+i; j++) {
+				for(int j=i; j<mh+i; j++) {
 					int k=j+mh;
 					double er=rl[k]*wr-ig[k]*wi;
 					double ei=rl[k]*wi+ig[k]*wr;
@@ -179,31 +183,29 @@
 				}
 			}
 		}
-		if (sign) for (int i=0; i<n; i++)
+		if(sign) for(int i=0; i<n; i++)
 				rl[i]/=n,ig[i]/=n;
 	}
-	double ax[222222],ay[222222];
-	double bx[222222],by[222222];
-	double ansx[222222],ansy[222222];
-	int fftmultiply (int *a,int la,int *b,int lb,int *ans) {
-		int lans=max (la,lb),ln=0,i;
-		while ( (1<<ln) <lans) ++ln;
+	int fftmultiply(int *a,int la,int *b,int lb,LL *ans) {
+		int lans=max(la,lb),ln=0,i;
+		while((1<<ln) <lans) ++ln;
 		lans=2<<ln;
-		for (i=0; i<lans; i++)
+		for(i=0; i<lans; i++)
 			ax[i]=i<la?a[i]:0,ay[i]=0;
-		fft (ax,ay,lans,0);
-		for (i=0; i<lans; i++)
+		fft(ax,ay,lans,0);
+		for(i=0; i<lans; i++)
 			bx[i]=i<lb?b[i]:0,by[i]=0;
-		fft (bx,by,lans,0);
-		for (i=0; i<lans; i++) {
+		fft(bx,by,lans,0);
+		for(i=0; i<lans; i++) {
 			ansx[i]=ax[i]*bx[i]-ay[i]*by[i];
 			ansy[i]=ax[i]*by[i]+ay[i]*bx[i];
 		}
-		fft (ansx,ansy,lans,1);
-		for (i=0; i<lans; i++)
+		fft(ansx,ansy,lans,1);
+		for(i=0; i<lans; i++)
 			ans[i]=ansx[i]+0.5;
 		return lans;
 	}
+
 
 **5 单纯形**
 >验题: hdu2979
