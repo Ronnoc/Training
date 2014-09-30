@@ -11,8 +11,8 @@
 		bool operator < ( const point &p ) const {
 			return sign( x - p.x ) == 0 ? sign( y - p.y ) <= 0 : sign( x - p.x ) <= 0;
 		}
-		double operator ^( point p ) {return x*p.y-y*p.x;}
-		double operator *( point p ) {return x*p.x+y*p.y;}
+		double operator *( point p ) {return x*p.x+y*p.y;}//dot
+		double operator ^( point p ) {return x*p.y-y*p.x;}//det
 		double len() {return sqrt( x*x+y*y );}
 		double arc() {return atan2( y, x );}
 		point normal() {return ( *this ) / this->len();}
@@ -21,8 +21,8 @@
 		{return point( x*cos( arc ) - y*sin( arc ),x*sin( arc ) + y*cos( arc ) );}
 		double dis( point p ) {return ( *this - p ).len();}
 		double dis2( point p ) {p = p - ( *this ); return p*p;}
-		void in() {scanf( "%lf%lf", &x, &y );}
-		void out( char *s="" ) {printf( "(%f,%f)%s",x,y,s );}
+		void read() {scanf( "%lf%lf", &x, &y );}
+		void write( char *s="" ) {printf( "(%f,%f)%s",x,y,s );}
 	} Orz( 0,0 );
 	bool isLL( point p1, point p2, point q1, point q2 ,point &is ) {
 		double m=( q2-q1 )^( p1-q1 ),n=( q2-q1 )^( p2-q1 );
@@ -41,8 +41,9 @@
 		spt operator *(double d) {return spt(x*d,y*d,z*d);}
 		spt operator /(double d) {return spt(x/d,y/d,z/d);}
 		double len()const {return sqrt( SQ(x)+SQ(y)+SQ(z) );}
-		double operator *( spt s ) {return x*s.x+y*s.y+z*s.z;} //点积
-		spt operator ^( spt s ) {	//叉积
+		spt normal() {double d=(*this).len();return (*this)/d;}
+		double operator *( spt s ) {return x*s.x+y*s.y+z*s.z;} //dot
+		spt operator ^( spt s ) {	//det
 			spt ret;
 			ret.x=y*s.z-z*s.y;
 			ret.y=z*s.x-x*s.z;
@@ -57,7 +58,8 @@
 		bool operator ==(const spt &s)const {
 			return sign(s.x-x)==0&&sign(s.y-y)==0&&sign(s.z-z)==0;
 		}
-		void output() {printf( "(%.6f %.6f %.6f)\n",x,y,z );}
+		void read() {scanf("%lf%lf%lf",&x,&y,&z);}
+		void write(char *s="") {printf( "(%.6f %.6f %.6f)%s",x,y,z,s );}
 	} Orz( 0,0,0 );
 	struct sfl {
 		spt p,o;
@@ -334,7 +336,7 @@
 **8 平面最近点对**
 > 验题:zoj 2107
 
-	const int MAXN = int ( 1e5 + 10 );
+	const int MAXN = 100000+10;
 	double closed;
 	struct point {
 		double x, y;

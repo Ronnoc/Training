@@ -76,23 +76,29 @@
 	}
 
 **2 BIT**
->?
 
-	int BIT[MXN+10];
-	int LB( int w ) {return w&( -w );}
-	LL query( int w ) {
-		LL ret=0;
-		for ( w+=5; w>0; w-=LB( w ) )ret+=BIT[w];
-		return ret;
-	}
-	void update( int w,int d ) {
-		for ( w+=5; w<MXN; w+=LB( w ) )BIT[w]+=d;
-	}
+	inline int LB(int x){return x&(-x);}
+	struct BIT{
+		LL _[MXN];
+		int n;
+		void init(int m){
+			n=m+5;
+			for(int i=0;i<=n;i++)_[i]=0;
+		}
+		LL query(int w){
+			LL ret=0;
+			for(w+=3;w>0;w-=LB(w))ret+=_[w];
+			return ret;
+		}
+		void update(int w,LL d){
+			for(w+=3;w<n;w+=LB(w))_[w]+=d;
+		}
+	};
+
 
 **3 SGT**
->?
 
-	const int MXN = 10000 + 10;
+	const int MXN = 100000 + 10;
 	struct SEG {
 		int l,r,m,lazy;
 		SEG( int _l=0,int _r=0 ) {l=_l,r=_r;}

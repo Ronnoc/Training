@@ -18,8 +18,7 @@
 		LL x, y;
 		extGcd(a,m,x,y);
 		return (m+x%m)%m;
-	}
-	//if m为质数 [费马小定理]a^(m-1)=1 mod m ==>a^(m-2)是a关于m的逆元
+	}//if m为质数 [费马小定理]a^(m-1)=1 mod m ==>a^(m-2)是a关于m的逆元
 
 **3 Millar素数测试 && rho大整数因数分解**
 >验题: poj 2447,2429,1811
@@ -95,7 +94,7 @@
 	}
 
 
-**4 组合数 取模**
+**4 阶乘模分解**
 >验题:浙大shi哥译书
 
 	int fact[MAX_P];	//预处理n! mod p 的表 O(n)
@@ -108,16 +107,6 @@
 		if (n / p % 2)
 			return res * (p - fact[n % p]) % p;
 		return res * fact[n % p] % p;
-	}
-	//C _(n) ^(k) %p
-	int modComb (int n, int k, int p) {
-		if (n < 0 || k < 0 || n < k) return 0;
-		int e1, e2, e3;
-		int a1 = modFact (n, p, e1);
-		int a2 = modFact (k, p, e2);
-		int a3 = modFact (n - k, p, e3);
-		if (e1 > e2 + e3) return 0;
-		return a1 * modInv (a2 * a3 % p, p) % p;
 	}
 
 **5 欧拉函数**
@@ -132,8 +121,7 @@
 			}
 		if (n != 1) res = res / n * (n - 1);
 		return res;
-	}
-	//筛法见mobius
+	}//筛法见mobius
 
 **7 模同余方程组**
 >验题:poj2891
@@ -183,22 +171,6 @@
 		}
 		return -1;
 	}
-	//x^K=A mod P(质数)::gcd(K,P-1)不大
-	if ( !A ) {printf( "1\n0\n" ); continue;}
-	int g=find_root( P );//原根
-	int b=extBSGS( g,A,P );
-	int f=P-1;
-	int e=__gcd( f,K );
-	if ( b%e ) {printf( "0\n" ); continue;}
-	b/=e,f/=e,K/=e;
-	LL x,y;
-	extGcd( f,K,x,y );
-	vector<LL>S;
-	y=( y*b%f+f )%f;
-	while ( e-- ) {
-		S.PB( powMod( g,y,P ) );
-		y=( y+f )%( P-1 );
-	}
 
 
 **9 莫比乌斯**
@@ -230,22 +202,22 @@
 
 	int mu[N], p[N], pn;
 	bool flag[N];	//true为合数
-	void init() {
-			pn = 0;
-			mu[1] = 1;
-			for(int i = 2; i < N; i++) {
-					if(!flag[i]) {
-							p[pn ++ ] = i;
-							mu[i] = -1;						//phi[i]=i-1;
-					}
-					for(int j = 0; j < pn && i * p[j] < N; j++) {
-							flag[i * p [j]] = true;
-							if(i % p[j] == 0) {
-									mu[i * p[j]] = 0;		//phi[i * p[j]] = p[j] * phi[i];
-									break;
-							} else  mu[i * p[j]] = -mu[i];  //phi[i * p[j]] = (p[j] - 1) * phi[i];
-					}
+	void init(int n) {
+		pn = 0;
+		mu[1] = 1;
+		for(int i = 2; i <= n; i++) {
+			if(!flag[i]) {
+				p[pn ++ ] = i;
+				mu[i] = -1;						//phi[i]=i-1;
 			}
+			for(int j = 0; j < pn && i * p[j] <= n; j++) {
+				flag[i * p [j]] = true;
+				if(i % p[j] == 0) {
+					mu[i * p[j]] = 0;			//phi[i * p[j]] = p[j] * phi[i];
+					break;
+				} else  mu[i * p[j]] = -mu[i];	//phi[i * p[j]] = (p[j] - 1) * phi[i];
+			}
+		}
 	}
 
 **10 线性递推取模最小值**
@@ -269,7 +241,7 @@
 >验题:ural 1132
 
 	//call(b,0,a,(p+1)/2,p) return a sol of {x^2=a (mod p)}
-	//(p is odd prime)&&(there exist a sol{a^[(p-1)/2]=1 mod p})&&(b^( (p-1)/2 )==-1 mod p)
+	//{p is odd prime}&&{a^[(p-1)/2]=1 mod p}&&{b^( (p-1)/2 )==-1 mod p}
 	LL call(LL b,LL c,LL a,LL x,LL p){
 		if(x%2==0)return modPow(b,c/2,p)*modPow(a,x/2,p)%p;
 		LL tp=modPow(b,c/2,p)*modPow(a,(x-1)/2,p)%p;

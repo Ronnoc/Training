@@ -1,5 +1,4 @@
 **1 JAVA I/O**
->based on Petr's template
 
 	import java.io.BufferedReader;
 	import java.io.IOException;
@@ -28,8 +27,7 @@
 				// reader = new BufferedReader(new InputStreamReader(new FileInputStream(".in")));
 				// writer = new PrintWriter(new FileOutputStream(".out"));
 				tokenizer = null;
-				while (hasNext())
-					Solve();
+				while (hasNext()) Solve();
 				reader.close();
 				writer.flush();
 				writer.close();
@@ -79,7 +77,7 @@
 **2 栈空间**
 
 	#pragma comment(linker, "/STACK:1024000000,1024000000")		//C++
-    int size = 256<<20;	//256MB Linix G++
+    int size = 256<<20;						//256MB Linix G++
     char *p = (char*)malloc(size) + size;
     __asm__("movl %0, %%esp\n" :: "r"(p) );
 
@@ -130,12 +128,11 @@
 		isdigit('0'~'9');isalnum(isaplha||isdigit);isxdigit(isdigit||'a'~'f'||'A'~'F');
 		isspace(' ','\t','\n','\v','\f','\r');
 	string::substr(start,len);
-	multiset::count() O(n)!!!
 	bitset:://bitset<55>G[55];
 		operator[],&,^,|,<<,>>,~;
 		all()//all is 1?
 		any()//any is 1?
-		count()//number of 1
+		count()//how many 1?
 		reset()//all 0
 		set()//all 1
 		set(int id,bool tmp=true)//set id is tmp
@@ -147,4 +144,3 @@
 		/*{1,2,3,4,5,6,7,8,9}  rotate(a,a+3,a+9)  {4,5,6,7,8,9,1,2,3}*/
 		merge(op1,ed1,op2,ed2,ret)
 		min_element(op,ed)//max
-		next_permutation(op,ed)//prev

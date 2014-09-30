@@ -32,7 +32,6 @@
 **2 Polya 原理**
 >验题:poj1286
 
-	//perm[0..n-1]为0..n-1的一个置换(排列)
 	//返回置换最小周期,num返回循环节个数
 	int polya (int* perm, int n, int& num) {
 		int i, j, p, v[MXN] = {0}, ret = 1;
@@ -47,7 +46,6 @@
 **3 高斯消元**
 >验题:hdu4870
 
-	//全主元gauss消去解a[][]x[]=b[],返回是否有唯一解,若有解在b[]中
 	#define MXN 300
 	#define fabs(x) ((x)>0?(x):-(x))
 	double a[MXN][MXN],b[MXN];
@@ -319,13 +317,6 @@
 **8 无标号树计数**
 >来自yh_victor的板子
 
-	void extended_gcd(int a,int b,int c,int &x,int &y) {
-		if(b==0)x=c/a,y=0;
-		else {
-			extended_gcd(b,a%b,c,y,x);
-			y-=a/b*x;
-		}
-	}
 	int solve(int k,int n,int p) {//无标号树计数
 		int a[55],s[55][55],tmp,foo;
 		a[1]=1;
@@ -337,7 +328,8 @@
 				a[j+1]+=s[j][i]*i%p*a[i]%p;
 			}
 			foo=a[j+1]%p;
-			extended_gcd(j,p,foo,a[j+1],tmp);
+			extGcd(j,p,a[j+1],tmp);
+			a[j+i]*=foo,tmp*=foo;
 			if(a[j+1]>=0) a[j+1]%=p;
 			else a[j+1]=p-(-a[j+1])%p;
 		}
