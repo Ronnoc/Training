@@ -110,7 +110,7 @@
 		sgn=(c=='-')?-1:1;
 		ret=(c=='-')?0:(c-'0');
 		while(c=getchar(),c>='0'&&c<='9') ret=ret*10+(c-'0');
-		if(sgn)ret=-ret;
+		ret*=sgn;
 		return 1;
 	}
 	inline void out(int x) {
