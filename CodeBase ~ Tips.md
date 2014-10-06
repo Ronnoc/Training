@@ -1,4 +1,4 @@
- 1. 矩阵乘法通用优越姿势
+ 1. 矩阵乘法
  	`for(i)for(j)if(a.x[i][j])for(k)ret.x[i][k]+=a.x[i][j]*b.x[j][k]`
  2. 错排
 
