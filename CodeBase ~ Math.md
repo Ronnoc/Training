@@ -255,9 +255,9 @@
 	int solve() {
 		int i,j;
 		long double temp;
-		for ( i=1; i<=ne; i++ )if ( abs( a[0][idx[i]] )>eps ) {
-				temp=a[0][idx[i]];
-				for ( j=0; j<=nv; j++ )a[0][j]-=temp*a[i][j];
+		for ( i=1; i<=ne; i++ )for(k=0;k<=ne;k++)if (k!=i&& abs( a[k][idx[i]] )>eps ) {
+				temp=a[k][idx[i]];
+				for ( j=0; j<=nv; j++ )a[k][j]-=temp*a[i][j];
 			}
 		int dual=0;
 		for ( i=1; i<=ne; i++ )if ( a[i][0]<-eps )dual=1;
