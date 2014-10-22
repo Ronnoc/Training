@@ -40,7 +40,7 @@
 		spt operator -( spt &s ) {return spt( x-s.x,y-s.y,z-s.z );}
 		spt operator *(double d) {return spt(x*d,y*d,z*d);}
 		spt operator /(double d) {return spt(x/d,y/d,z/d);}
-		double len()const {return sqrt( SQ(x)+SQ(y)+SQ(z) );}
+		double len() {return sqrt( SQ(x)+SQ(y)+SQ(z) );}
 		spt normal() {double d=(*this).len();return (*this)/d;}
 		double operator *( spt s ) {return x*s.x+y*s.y+z*s.z;} //dot
 		spt operator ^( spt s ) {	//det
