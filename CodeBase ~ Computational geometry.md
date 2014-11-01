@@ -266,6 +266,7 @@
 **6 多边形与一个圆面积交**
 >验题:poj3675
 
+	double r;	//O(0,0)
 	double area2( point pa,point pb ) {
 		if ( pa.len()<pb.len() )swap( pa,pb );
 		if ( pb.len()<eps )return 0;

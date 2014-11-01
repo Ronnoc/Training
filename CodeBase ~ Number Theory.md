@@ -38,6 +38,12 @@
 		}
 		return ret;
 	}
+	/*LL mulMod( LL A,LL B,LL C ) {
+		LL y=( ( long double )A*B )/C;
+		LL ret=A*B-C*y;
+		if ( ret<0 )ret+=C;
+		return ret;
+	}*///fzu1752
 	LL powMod( LL x,LL n,LL mod ) {
 		LL ret=1;
 		while ( n ) {

@@ -180,6 +180,15 @@
 		void update(int w,LL d){
 			for(w+=3;w<n;w+=LB(w))_[w]+=d;
 		}
+		int find_Kth(int k){		//UESTC_Dagon
+			int idx=0;
+			for(int i=20;i>=0;i--){
+				idx|=1<<i;
+				if(idx<=n&&_[idx]<k)k-=tree[idx];
+				else idx^=1<<i;
+			}
+			return idx+1;
+		}
 	};
 
 
