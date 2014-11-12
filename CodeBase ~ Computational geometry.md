@@ -379,3 +379,21 @@
 			}
 		}
 	}
+
+**9 三维绕轴旋转**
+>hdu 4087
+
+	mat ret;
+	double Cos=cos(A),Sin=sin(A);
+	S.normal();
+	ret[3][3]=1;
+	ret[0][0]=x*x+(1-x*x)*Cos;
+	ret[0][1]=x*y*(1-Cos)-z*Sin;
+	ret[0][2]=x*z*(1-Cos)+y*Sin;
+	ret[1][0]=y*x*(1-Cos)+z*Sin;
+	ret[1][1]=y*y+(1-y*y)*Cos;
+	ret[1][2]=y*z*(1-Cos)-x*Sin;
+	ret[2][0]=z*x*(1-Cos)-y*Sin;
+	ret[2][1]=z*y*(1-Cos)+x*Sin;
+	ret[2][2]=z*z+(1-z*z)*Cos;
+	return ret;
