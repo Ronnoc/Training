@@ -82,7 +82,7 @@
     __asm__("movl %0, %%esp\n" :: "r"(p) );
 
 **3 ext/?**
->rope::块状链表
+>rope::
 
 	#include <ext/rope>
 	using namespace __gnu_cxx;

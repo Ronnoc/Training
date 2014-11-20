@@ -103,7 +103,7 @@
 **4 阶乘模分解**
 >验题:浙大shi哥译书
 
-	int fact[MAX_P];	//预处理n! mod p 的表 O(n)
+	int fact[MAX_P];	//预处理n! mod p 的表 O(min(n,p))
 	// n!=a*p^e return a%p
 	int modFact (int n, int p, int &e) {
 		e = 0;
