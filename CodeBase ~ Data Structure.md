@@ -184,13 +184,12 @@
 			int idx=0;
 			for(int i=20;i>=0;i--){
 				idx|=1<<i;
-				if(idx<=n&&_[idx]<k)k-=tree[idx];
+				if(idx<=n&&_[idx]<k)k-=_[idx];
 				else idx^=1<<i;
 			}
-			return idx+1;
+			return idx-2;
 		}
-	};
-
+	}Y;
 
 **4 SGT**
 
