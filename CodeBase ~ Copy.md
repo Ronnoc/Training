@@ -185,7 +185,7 @@
 **3 NTT数论变换**
 >EternalReality
 
-    //g是p的原根,p为素数且len|p-1&&ppt(len)=1
+    //g是p的原根,p为素数且len|p-1&&len=2^?
     const int p=786433,g=10;
     LL pm(LL a,int n,int m=p) {
         LL r=1;

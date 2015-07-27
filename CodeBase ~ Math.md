@@ -280,8 +280,7 @@
 **6 阶乘最后非零位**
 >验题: hdu1066
 
-	//求阶乘最后非零位,复杂度O(nlogn),返回该位,n以字符串方式传入 MAXN cstring
-	int lastdigit(char* buf){
+	int lastdigit(char* buf){//求阶乘最后非零位,复杂度O(nlogn)
 		const int mod[20]={1,1,2,6,4,2,2,4,2,8,4,4,8,4,6,8,8,6,8,2};
 		int len=strlen(buf),a[MAXN],i,c,ret=1;
 		if (len==1)
