@@ -397,3 +397,47 @@
 	ret[2][1]=z*y*(1-Cos)+x*Sin;
 	ret[2][2]=z*z+(1-z*z)*Cos;
 	return ret;
+
+**10 多圆面积**
+>sjtu
+
+	struct Tevent {
+	    point p; double ang; int add;
+	    Tevent(point q = point(0, 0), double w = 0, int e = 0) {p = q, ang = w, add = e;}
+	    bool operator <(const Tevent &a) const {return ang < a.ang; }
+	} eve[maxn * 2];
+	int E, cnt;
+	struct Tcir {point o; double r;};
+	void circleCrossCircle(Tcir &a, Tcir &b) {
+	    double l = (a.o - b.o).len2();
+	    double s = ((a.r - b.r) * (a.r + b.r) / l + 1) * .5;
+	    double t = sqrt(-(l - sqr(a.r - b.r)) * (l - sqr(a.r + b.r)) / (l * l * 4.));
+	    point dir = b.o - a.o;  point Ndir = point(-dir.y, dir.x);
+	    point aa = a.o + dir * s + Ndir * t, bb = a.o + dir * s - Ndir * t;
+	    double A = atan2(aa.y - a.o.y, aa.x - a.o.x), B = atan2(bb.y - a.o.y, bb.x - a.o.x);
+	    eve[E++] = Tevent(bb, B, 1); eve[E++] = Tevent(aa, A, -1); if (B > A) cnt++;
+	}
+	bool g[maxn][maxn], Overlap[maxn][maxn];
+	//必须去掉重复的圆 Overlap[i][j]:i包含j g[i][j]:i和j相交
+	double Area[maxn]; Tcir c[maxn]; int C;
+	int main() {
+	    for (int i = 0; i <= C; ++i) Area[i] = 0;
+	    for (int i = 0; i < C; ++i) {
+	        E = 0, cnt = 1;
+	        for (int j = 0; j < C; ++j) if (j != i && Overlap[j][i]) cnt++;
+	        for (int j = 0; j < C; ++j) if (i != j && g[i][j])
+	                circleCrossCircle(c[i], c[j]);//cnt表示覆盖次数超过cnt
+	        if (E == 0) {
+	            Area[cnt] += PI * c[i].r * c[i].r;
+	        } else {
+	            double counts = 0; sort(eve, eve + E); eve[E] = eve[0];
+	            for (int j = 0; j < E; ++j) {
+	                cnt += eve[j].add;
+	                Area[cnt] += (eve[j].p ^ eve[j + 1].p) * .5; //det
+	                double theta = eve[j + 1].ang - eve[j].ang;
+	                if (theta < 0) theta += PI * 2.;
+	                Area[cnt] += (theta - sin(theta)) * c[i].r * c[i].r * .5;
+	            }
+	        }
+	    }
+	}

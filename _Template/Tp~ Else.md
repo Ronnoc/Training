@@ -191,3 +191,4 @@
 		while(re){dig[ndig++]=re%10;re/=10;}
 		return dfs(--ndig,0,aim);
 	}
+
