@@ -30,7 +30,7 @@ int extBSGS( int A, int B, int C ) { //A^x==B mod C
 		L.PB( MP( G, i ) );
 		G = G * A % C;
 	}
-	SORT( L );
+	sort( L.OP,L.ED );
 	for ( int i = 0; i <= s; i++ ) {
 		int tmp = modInv( D, C ) * B % C;
 		int id = lower_bound( L.OP, L.ED, MP( tmp, -1 ) ) - L.OP;
