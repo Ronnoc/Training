@@ -1,4 +1,3 @@
-SRM 479 DIV1    250pt ( 简单的处理技巧 ) 推荐代码: wata
 SRM 462 DIV1    250pt ( trick题，AC率奇低） 推荐人：baihacker
 SRM 449 DIV2    250pt   ( 需要一点思维） 推荐人：daizhenyang
 SRM 488 DIV1    250pt ( 逆推dp+求期望,一类基础的dp题型 ) 推荐代码: 官方题解
