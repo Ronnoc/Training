@@ -1,9 +1,7 @@
-SRM 462 DIV1    250pt ( trick题，AC率奇低） 推荐人：baihacker
 SRM 449 DIV2    250pt   ( 需要一点思维） 推荐人：daizhenyang
 SRM 488 DIV1    250pt ( 逆推dp+求期望,一类基础的dp题型 ) 推荐代码: 官方题解
 SRM 505 DIV1    300pt ( 规律，连通分量 ) 推荐代码: practice room writer
 
-SRM 508 DIV1    500pt ( 按位+状态压缩dp ) 推荐代码: Petr
 SRM 521 DIV1    500pt ( 枚举+小偏移，考思路 ) 推荐代码: ACRush,crazyb0y
 SRM 520 DIV1    500pt ( dp+处理累和方法的状态表示技巧 ) 推荐代码: 官方题解
 SRM 516 DIV1    500pt ( 很明显的贪心 ) 推荐代码: Petr
