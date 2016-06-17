@@ -32,7 +32,6 @@ SRM 475 DIV1    600pt   ( 不错的数论题 ) 推荐代码：官方题解
 SRM 145 DIV1    600pt ( 纯模拟，考察基本功，代码50行左右，但当时最快的SnapDragon大神居然只做到508.66分 ) 推荐代码：practice room meret
 
 SRM 409 DIV1    900pt （枚举+概率）推荐代码：官方题解
-SRM 491 DIV1    900pt ( 可以分数规划+网络流，不过要注意精度；另外也可以贪心 ) 推荐代码: Rizvanov_de_xXx,论坛 RalphFurmaniak
 SRM 483 DIV1    900pt ( 陷阱题，枚举+模拟，枚举的界限是关键 ) 推荐代码: wata
 SRM 481 DIV1    900pt ( dp基础 ) 推荐代码: wata
 SRM 475 DIV1    900pt （不错的dp）推荐代码：practice room writer
