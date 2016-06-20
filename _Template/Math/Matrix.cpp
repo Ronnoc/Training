@@ -1,5 +1,6 @@
 const int MXN = 500+5;
 template <typename T> class Matrix{
+    public:
     int n,m ;
     T a[MXN][MXN];
     Matrix() {memset(a , 0 , sizeof(a));}
