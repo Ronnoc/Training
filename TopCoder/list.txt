@@ -1,5 +1,4 @@
 SRM 449 DIV1    250pt ( 需要一点思维） 推荐人：daizhenyang
-SRM 488 DIV1    250pt ( 逆推dp+求期望,一类基础的dp题型 ) 推荐代码: 官方题解
 SRM 505 DIV1    300pt ( 规律，连通分量 ) 推荐代码: practice room writer
 
 SRM 480 DIV1    450pt ( 需要一点思路，另外别中烟雾弹 ) 推荐代码: Petr
