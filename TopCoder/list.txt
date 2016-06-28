@@ -3,7 +3,6 @@ SRM 505 DIV1    300pt ( 规律，连通分量 ) 推荐代码: practice room writ
 
 SRM 480 DIV1    450pt ( 需要一点思路，另外别中烟雾弹 ) 推荐代码: Petr
 SRM 521 DIV1    500pt ( 枚举+小偏移，考思路 ) 推荐代码: ACRush,crazyb0y
-SRM 520 DIV1    500pt ( dp+处理累和方法的状态表示技巧 ) 推荐代码: 官方题解
 SRM 516 DIV1    500pt ( 很明显的贪心 ) 推荐代码: Petr
 SRM 507 DIV1    500pt ( 枚举+贪心的计算 ) 推荐代码: practice room writer solutionA
 SRM 503 DIV1    500pt ( 求期望题.贪心，枚举，概率计算 ) 推荐代码: rng_58
