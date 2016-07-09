@@ -1,5 +1,6 @@
 //逆元
 //>验题: poj2447
+//for(inv[1]=1,i=2;i<10000;i++)inv[i]=inv[MOD%i]*(MOD-MOD/i)%MOD;//MOD is prime
 LL extGcd (LL a, LL b, LL &x, LL &y) {
 	LL ret = a;
 	if (b) {
