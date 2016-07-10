@@ -74,9 +74,8 @@ void play(int mask,int cost,int has,LL att){
 		int temp=0;
 		rep(j,L[i]+1,K[i]){
 			temp+=C[i][j-1];
-			if(temp<=cost){
+			if(temp<=cost)
 				now=A[i][j];
-			}
 			else break;
 		}
 		G[ig++]=(-now);
@@ -96,19 +95,14 @@ void play(int mask,int cost,int has,LL att){
 	play(mask^(1<<id),cost,has,att);
 }
 void solve(){
-	int w;
 	scanf("%d%d",&m,&n);
 	rep(i,0,n){
 		scanf("%d%d",&K[i],&L[i]);
 		L[i]--;
-		rep(j,0,K[i]){
-			scanf("%d",&w);
-			A[i][j]=w;
-		}
-		rep(j,1,K[i]){
-			scanf("%d",&w);
-			C[i][j-1]=w;
-		}
+		rep(j,0,K[i])
+			scanf("%d",&A[i][j]);
+		rep(j,1,K[i])
+			scanf("%d",&C[i][j-1]);
 	}
 	ans=0;
 	play((1<<n)-1,m,0,0);
