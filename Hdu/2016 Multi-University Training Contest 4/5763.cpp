@@ -51,10 +51,10 @@ LL modPow(LL a,LL b,LL MOD){
 	}return ret;
 }
 
-const int Maxn = 100005;
+const int MXN = 100005;
 struct KMP {//调用init(s(待匹配串),t(模式串));适用多次KMP
-    char S[Maxn], T[Maxn];
-    int next[Maxn], is[Maxn];
+    char S[MXN], T[MXN];
+    int next[MXN], is[MXN];
     int LT, LS;
     void init(char s[], char t[]) {
         int i;
