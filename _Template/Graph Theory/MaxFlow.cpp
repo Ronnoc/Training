@@ -7,7 +7,8 @@ namespace SAP{
 	int S,T,tot,Tn;
 	void init(int s,int t,int tn){
 		tot=1;
-		memset(fst,0,sizeof fst);
+		fill(fst,fst+tn,0);
+		fill(dis,dis+tn,0);
 		S=s;T=t;Tn=tn;
 	}
 	void add(int u,int v,ft c1,ft c2=0){
