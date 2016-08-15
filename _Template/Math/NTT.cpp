@@ -2,8 +2,9 @@
 //>EternalReality
 
 //g是p的原根,p为素数且len|p-1&&len=2^?
-const int p = 786433, g = 10;
-const int N = p+5;
+//998244353=119*2^23+1
+const int p = 998244353, g = 3;
+const int N = 1<<18;
 LL pm(LL a, int n, int m = p) {
     LL r = 1;
     for (; n; n >>= 1, a = a * a % p)
@@ -12,7 +13,7 @@ LL pm(LL a, int n, int m = p) {
 }
 int rb(int x, int m) {
     int r = 0;
-    for (; m > 1; m >>= 1, x >>= 1)r = r << 1 | x & 1;
+    for (; m > 1; m >>= 1, x >>= 1)r = r << 1 | (x & 1);
     return r;
 }
 void ntt(int *a, int len) {
@@ -28,13 +29,13 @@ void ntt(int *a, int len) {
             }
     }
 }
+int wa[N], wb[N];
 void conv(int *a, int *b, int *c, int len) {
-    static int wa[N], wb[N];
-    rep (i, len) wa[i] = a[i], wb[i] = b[i];
+    rep (i, 0,len) wa[i] = a[i], wb[i] = b[i];
     ntt(wa, len);
     ntt(wb, len);
     int inv = pm(len, p - 2);
-    rep (i, len) c[i] = wa[i] * (LL)wb[i] % p * inv % p;
+    rep (i,0, len) c[i] = wa[i] * (LL)wb[i] % p * inv % p;
     reverse(c + 1, c + len);
     ntt(c, len);
 }
