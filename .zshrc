@@ -65,7 +65,7 @@ alias -s cpp='vim'
 alias -s json='vim'
 
 alias go='gnome-open'
-alias sc='scons -uj`nproc` --verify-libdeps'
+alias sc='scons -uj`nproc`'
 alias gb='git branch'
 alias gst='git status'
 
