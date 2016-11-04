@@ -7,3 +7,5 @@ curl -fLo ~/.vimrc \
 
 # oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+curl -fLo ~/.zshrc \
+      https://raw.githubusercontent.com/Ronnoc/Training/master/.zshrc
