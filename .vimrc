@@ -122,7 +122,7 @@ set t_Co=256
 
 let g:solarized_termcolors=16
 "两种流行风格的主题
-”colorscheme molokai
+"colorscheme molokai
 set background=dark
 colorscheme desert
 "set background=light
