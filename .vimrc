@@ -372,3 +372,5 @@ set wrap "自动换行
 set nobackup
 
 set nowritebackup
+
+set gcr=a:block-blinkon0
