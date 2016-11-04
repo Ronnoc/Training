@@ -84,6 +84,8 @@ Plug 'https://github.com/scrooloose/syntastic.git'
 
 "Plug 'https://github.com/vim-scripts/cab.vim.git'
 
+Plug 'tpope/vim-sensible'
+
 call plug#end()
 
 
