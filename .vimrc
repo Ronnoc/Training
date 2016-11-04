@@ -310,7 +310,7 @@ autocmd BufEnter *.* exe 'silent ! echo -ne "\033];%:t\007"'
 
 "支持鼠标
 
-set mouse=a
+"set mouse=a
 
 
 " 多行缩进
