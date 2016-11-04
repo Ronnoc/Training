@@ -27,7 +27,13 @@ PROMPT='
 %{$fg[yellow]%}%~\
 %{$fg[white]%} $exit_code
 $%{$reset_color%} '
-RPROMPT='$(git_prompt_info)%{$reset_color%}'
+
+function my_git_prompt_info() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+}
+
+RPROMPT='$(my_git_prompt_info)%{$reset_color%}'
 
 # Must use Powerline font, for \uE0A0 to render.
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[white]%}git:%{$fg[cyan]%}"
@@ -78,4 +84,3 @@ export DBUS_SESSION_BUS_ADDRESS
 export DBUS_SESSION_BUS_PID
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
