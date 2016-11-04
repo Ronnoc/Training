@@ -1,5 +1,6 @@
 # ZSH的环境变量
 export ZSH=$HOME/.oh-my-zsh
+source $ZSH/oh-my-zsh.sh
 
 # 256色Term 
 export TERM=xterm-256color
@@ -53,13 +54,6 @@ HIST_STAMPS="yyyy-mm-dd"
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
 
-# 插件设置，如果添加太多启动速度会比较慢
-plugins=(git)
-
-#plugins autojump
-#[[ -s /mnt/ficuspi/ybkang/init/.autojump/etc/profile.d/autojump.sh ]] && source /mnt/ficuspi/ybkang/init/.autojump/etc/profile.d/autojump.sh
-#autoload -U compinit && compinit -u
-
 # My Zsh Config
 hash -d O='/mnt/ficuspi/ybkang/output/'
 hash -d G='/mnt/ficuspi/ybkang/git/'
@@ -72,6 +66,8 @@ alias -s json='vim'
 
 alias go='gnome-open'
 alias sc='scons -uj`nproc` --verify-libdeps'
+alias gb='git branch'
+alias gst='git status'
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"
 export CUDA_HOME=/usr/local/cuda
@@ -83,4 +79,3 @@ export DBUS_SESSION_BUS_PID
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source $ZSH/oh-my-zsh.sh
