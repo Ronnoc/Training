@@ -374,3 +374,6 @@ set nobackup
 set nowritebackup
 
 set gcr=a:block-blinkon0
+
+#python
+autocmd FileType python setlocal tabstop=2 shiftwidth=2 softtabstop=2
