@@ -14,7 +14,7 @@ rbenv_version() {
   rbenv version 2>/dev/null | awk '{print $1}'
 }
 
-local HOSTIP=`echo $SSH_CONNECTION |awk '{print $3}'`
+HOSTIP=`echo $SSH_CONNECTION |awk '{print $3}'`
 
 local exit_code="%(?,,exit=%{$fg[red]%}%?%{$reset_color%})"
 
@@ -74,6 +74,7 @@ alias go='gnome-open'
 alias sc='scons -uj`nproc`'
 alias gb='git branch'
 alias gst='git status'
+alias -g tmuxn='tmux new -s '$HOSTIP
 
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"
 export CUDA_HOME=/usr/local/cuda
