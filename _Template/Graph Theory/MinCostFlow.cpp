@@ -48,7 +48,7 @@ template <typename T> class MinCostFlow{
 			int y=path[x].AA;
 			int id=path[x].BB;
 			sum+=adj[y][id].cost;
-			cmin(f,adj[y][id].cap);
+			f=min(f,adj[y][id].cap);
 			x=y;
 		}
 		x=t;
