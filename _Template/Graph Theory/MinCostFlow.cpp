@@ -1,4 +1,11 @@
 #define COST_INF 1e9
+#define MP make_pair
+#define AA first
+#define BB second
+#define SZ size()
+#define PB push_back
+typedef long long LL;
+typedef pair<int,int> PII;
 template <typename T> class MinCostFlow{
 	private:
 	struct edge{int to;LL cap;T cost;int rev;};
